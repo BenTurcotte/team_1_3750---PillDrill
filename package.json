@@ -1,0 +1,25 @@
+{
+  "name": "team_1_3750",
+  "version": "1.0.0",
+  "description": "CIS3750 Project Backend - Team 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "sudo NODE_ENV=production node src/main.js",
+    "test": "node test/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenTurcotte/team_1_3750.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenTurcotte/team_1_3750/issues"
+  },
+  "homepage": "https://github.com/BenTurcotte/team_1_3750#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "sqlite3": "^3.1.13"
+  }
+}
