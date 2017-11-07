@@ -4,7 +4,7 @@
   "description": "CIS3750 Project Backend - Team 1",
   "main": "index.js",
   "scripts": {
-    "start": "sudo NODE_ENV=production node src/main.js",
+    "start": "sudo NODE_ENV=production node src/main.js 131.104.180.41",
     "test": "node test/main.js"
   },
   "repository": {

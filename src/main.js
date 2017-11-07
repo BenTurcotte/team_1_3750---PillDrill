@@ -10,6 +10,10 @@ const https = require("https");
 const app = express();
 
 //Now require any of our own modules (js files)
+const database = require("./database/database");
+const utils = require("./utils");
+
+const userRouter = require("./user/user");
 
 //Load any middleware that we want running all the time
 //This is so that every request will first go through these functions before getting to our own
@@ -20,7 +24,8 @@ app.use(express.json());
 app.disable("x-powered-by");
 app.disable("etag");
 
-//Pass the express app to all of our routes
+//Setup all of our routes
+app.use("/users", userRouter);
 
 //Hello world for testing
 app.get("/", function(req, res) {
@@ -34,9 +39,15 @@ app.all("*", function(req, res) {
 
 //Start the server the regular HTTP or HTTPS ports
 if (process.env.NODE_ENV == "development") {
-    //Just listen on localhost for development and testing
-    app.listen(8000, "localhost");
+    //Have an error handler that will send back the call stack
+    app.use(function(err, req, res, next) {
+        res.status(500).json(utils.createErrorObject(err.stack));
+    });
 
+    //Just listen on localhost for development and testing
+    var server = app.listen(8000, "localhost");
+
+    //Let the testing know that the server is ready
     process.on("message", function({ test }) {
         if (test) {
             process.send({ ready: true });
@@ -44,9 +55,18 @@ if (process.env.NODE_ENV == "development") {
     });
 } else if (process.env.NODE_ENV == "production") {
     throw new Error("HTTPS not set up yet");
-    // https.createServer({
-    //     //These are the options for creating the HTTPS server
-    //     key: ,
-    //     cert: ,
-    // })
+    var server = https.createServer({
+        //These are the options for creating the HTTPS server
+        // key: ,
+        // cert: ,
+    }, app);
+
+    //Starts the server on the general HTTPS port at the address that we give it
+    server.listen(443, process.argv[2]);
 }
+
+//Do anything that we need to before exiting
+server.on("close", function() {
+    console.log("db closed");
+    database.close();
+});

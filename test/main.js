@@ -11,6 +11,8 @@ const http = require("http");
 const testRunner = require("./test_runner")();
 const utils = require("./utils");
 
+const userTests = require("./user");
+
 //Start our main server
 var server = childProcess.fork("src/main.js", {
     env: {
@@ -27,23 +29,27 @@ server.on("message", function({ ready }) {
     if (!testReady) {
         testReady = ready;
 
-        testRunner.test((checkTest) => {
-            utils.makeGET("/", (data) => {
-                checkTest(data == "Hello World", "Not hello world")
-            });
+        userTests(testRunner);
+
+        // testRunner.test((checkTest) => {
+        //     utils.makeGET("/", (err, data) => {
+        //         if (err) {
+        //             checkTest(err, err.message);
+        //         } else {
+        //             checkTest(data == "Hello World", "Not hello world")
+        //         }
+        //     });
+        // });
+        
+        //Shutdown our server once every test is done
+        testRunner.startTests(() => {
+            server.kill();
         });
     }
 });
 
-//Shutdown our server once every test is done
-testRunner.whenDone(function() {
-    server.kill();
-    
-    //Print out the results of our tests
-    testRunner.summary();
-});
 
-//Recursively try to send this message to the server, checking if it's ready
+//Keep trying to send this message to the server, checking if it's ready
 //Stop sending messages when we know that the server is ready
 function sendToServer() {
     server.send({ test: true }, function() {
@@ -53,3 +59,4 @@ function sendToServer() {
     });
 }
 sendToServer();
+
