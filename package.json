@@ -4,7 +4,8 @@
   "description": "CIS3750 Project Backend - Team 1",
   "main": "index.js",
   "scripts": {
-    "start": "sudo NODE_ENV=production node src/main.js 131.104.180.41",
+    "start": "NODE_ENV=production node src/main.js 131.104.180.41 8000",
+    "start-dev": "NODE_ENV=development node src/main.js",
     "test": "node test/main.js"
   },
   "repository": {
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/BenTurcotte/team_1_3750#readme",
   "dependencies": {
     "express": "^4.16.2",
+    "markdown-it": "^8.4.0",
     "sqlite3": "^3.1.13"
   }
 }

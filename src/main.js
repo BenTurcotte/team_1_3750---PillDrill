@@ -1,10 +1,13 @@
 /*
 This is the entry point for our application
 */
+//Require any Node libraries
+const fs = require("fs");
+const https = require("https");
 
 //Require (include) any external libraries that we want to use
 const express = require("express");
-const https = require("https");
+const md = require("markdown-it")();
 
 //This is the application that we will interact with express through
 const app = express();
@@ -27,9 +30,13 @@ app.disable("etag");
 //Setup all of our routes
 app.use("/users", userRouter);
 
-//Hello world for testing
+//Be able to render our public API as HTML
 app.get("/", function(req, res) {
-    res.send("Hello World");
+    fs.readFile("api.md", "utf8", (err, data) => {
+        if (err) res.sendStatus(400);
+
+        res.send(md.render(data));
+    });
 });
 
 //Set up a 404 handler that catches any bad requests
@@ -46,6 +53,7 @@ if (process.env.NODE_ENV == "development") {
 
     //Just listen on localhost for development and testing
     var server = app.listen(8000, "localhost");
+    console.log("Listening on http://localhost:8000");
 
     //Let the testing know that the server is ready
     process.on("message", function({ test }) {
@@ -54,15 +62,15 @@ if (process.env.NODE_ENV == "development") {
         }
     });
 } else if (process.env.NODE_ENV == "production") {
-    throw new Error("HTTPS not set up yet");
     var server = https.createServer({
         //These are the options for creating the HTTPS server
-        // key: ,
-        // cert: ,
+        key: fs.readFileSync("ssl/server.key"),
+        cert: fs.readFileSync("ssl/server.crt"),
     }, app);
 
-    //Starts the server on the general HTTPS port at the address that we give it
-    server.listen(443, process.argv[2]);
+    //Starts the server on the port and address that we give it
+    server.listen(Number(process.argv[3]), process.argv[2]);
+    console.log(`Listening on https://${process.argv[2]}:${process.argv[3]}`)
 }
 
 //Do anything that we need to before exiting
