@@ -7,6 +7,7 @@ const sqlite = require("sqlite3");
 
 //Include our other database files
 const user = require("./user");
+const medication = require("./medication");
 
 //We need this singleton-like thing so that many files can all require this big JS file
 //Make sure that we only perform init once
@@ -25,15 +26,18 @@ if (!init) {
 
     //Create any objects that have functionality isolated in their module
     var userDB = user(db);
+    var medDB = medication(db, userDB);
 
     //Create any tables we need that don't exist
     userDB.createTable();
+    medDB.createTable();
 }
 
 //Export an object full of functions to call on the database
 module.exports = {
     //This is a user object that can make database calls related to the users
     user: userDB,
+    med: medDB,
 
     /**
      * Close the database before exiting. This should be done to save everything.
