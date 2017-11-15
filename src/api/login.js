@@ -16,8 +16,8 @@ module.exports = function(router) {
 
         db.user.login(params.email, params.password, function(err, userData) {
             if (err) {
-                res.status(400).json(utils.createErrorObject(err.stack));
-                // res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
+                // res.status(400).json(utils.createErrorObject(err.stack));
+                res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
                 return;
             }
 
