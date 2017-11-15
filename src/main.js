@@ -16,7 +16,7 @@ const app = express();
 const database = require("./database/database");
 const utils = require("./utils");
 
-const userRouter = require("./user/user");
+const userRouter = require("./api/user");
 
 //Load any middleware that we want running all the time
 //This is so that every request will first go through these functions before getting to our own
