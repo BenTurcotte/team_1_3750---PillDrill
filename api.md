@@ -36,7 +36,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 # API Endpoints
-## POST /users/createAccount
+## POST /users/CreateAccount
 ### Request
 ```json
 {
@@ -53,7 +53,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 }
 ```
 
-## POST /users/login
+## POST /users/Login
 ### Request
 ```json
 {
