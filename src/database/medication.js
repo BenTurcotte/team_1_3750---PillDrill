@@ -16,7 +16,7 @@ module.exports = function(db, userDB) {
          * - dosage_unit
          * - start_date
          * - end_date
-         * - frequency
+         * - times
          * - days_of_week : each day stores a string with comma-separated times
          * - notes
          * - notification
@@ -38,7 +38,7 @@ module.exports = function(db, userDB) {
                 dosage_unit TEXT NOT NULL,
                 start_date TEXT NOT NULL,
                 end_date TEXT NOT NULL,
-                frequency INTEGER,
+                times TEXT NOT NULL,
                 days_of_week TEXT NOT NULL,
                 notes TEXT,
                 notification INTEGER,

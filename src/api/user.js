@@ -27,8 +27,7 @@ module.exports = function (router) {
     */
     router.post("/CreateAccount", function (req, res) {
         var { email, password, accountType } = JSON.parse(req.body);
-        dbUser.createNewUser(email, password, accountType, function () {
-            // callback func goes here
-        });
+        dbUser.createNewUser(email, password, accountType, function () { /* STUFF */ });
+        res.body = '{"error" : null}';
     });
 };
