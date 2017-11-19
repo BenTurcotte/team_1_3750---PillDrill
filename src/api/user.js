@@ -30,4 +30,14 @@ module.exports = function (router) {
         dbUser.createNewUser(email, password, accountType, function () { /* STUFF */ });
         res.body = '{"error" : null}';
     });
+
+    /*
+    request has email and password
+    */
+    router.post("/Login", function(req, res) {
+        var { email, password, accountType } = JSON.parse(req.body);
+        login.login(email, password, function () {
+            // callback function
+        });
+    });
 };
