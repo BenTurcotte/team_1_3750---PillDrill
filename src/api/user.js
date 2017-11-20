@@ -18,26 +18,4 @@ var router = express.Router();
 login(router);
 medication(router);
 
-module.exports = function (router) {
-    
-    req.on('error', (err) => { utils.createErrorObject(err) }); // ??? what is err? hopefully a string...
-    
-    /*
-    request has auth_token, userID, client_JSON
-    */
-    router.post("/CreateAccount", function (req, res) {
-        var { email, password, accountType } = JSON.parse(req.body);
-        dbUser.createNewUser(email, password, accountType, function () { /* STUFF */ });
-        res.body = '{"error" : null}';
-    });
-
-    /*
-    request has email and password
-    */
-    router.post("/Login", function(req, res) {
-        var { email, password, accountType } = JSON.parse(req.body);
-        login.login(email, password, function () {
-            // callback function
-        });
-    });
-};
+module.exports = router;
