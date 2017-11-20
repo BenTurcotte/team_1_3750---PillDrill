@@ -62,14 +62,16 @@ if (process.env.NODE_ENV == "development") {
         }
     });
 } else if (process.env.NODE_ENV == "production") {
+    /*
     var server = https.createServer({
         //These are the options for creating the HTTPS server
         key: fs.readFileSync("ssl/server.key"),
         cert: fs.readFileSync("ssl/server.crt"),
     }, app);
-
+*/
     //Starts the server on the port and address that we give it
-    server.listen(Number(process.argv[3]), process.argv[2]);
+    var server = app.listen(Number(process.argv[3]), process.argv[2]);
+    //server.listen(Number(process.argv[3]), process.argv[2]);
     console.log(`Listening on https://${process.argv[2]}:${process.argv[3]}`)
 }
 
