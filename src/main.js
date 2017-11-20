@@ -27,6 +27,16 @@ app.use(express.json());
 app.disable("x-powered-by");
 app.disable("etag");
 
+app.use(function(req, res, next) {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.options("*", function(req, res) {
+    res.sendStatus(200);
+});
+
 //Setup all of our routes
 app.use("/users", userRouter);
 
