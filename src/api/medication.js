@@ -19,40 +19,56 @@ module.exports = function(router) {
     * !!! so far only sorts meds based on times, not days of the week !!!
     */
     router.post("/getSchedule", function(req, res) {
-        var params = utils.checkParameters(req,
-                    "loginToken",
-                    "id");
+        
+        var params = utils.checkParameters(req, "loginToken", "id");
+        
         db.user.checkLogin(params.id, params.loginToken, (err, stuff) => {
+            
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
                 return;
             }
+            
             db.med.getMedications(params.id, (err, allMeds) => {
+                
+                if (err) {
+                    res.status(400).json(utils.createErrorObject("Session expired."));
+                    return;
+                }
+                
                 var medsByTime = [];
-                allMeds.foreach(function(medication) {
-                    medication.times.split(",").sort().foreach(function(time) {
+                var schedule   = [];
+                var day        = [];
+                const today    = Date.getDay();
+                
+                allMeds.foreach(function(med) {
+                    med.times.split(",").sort().foreach(function(time) {
                         medsByTime.push(
                             {
-                            id                  : medication.id,
-                            user_id             : medication.user_id,
-                            name                : medication.name,
-                            dosage              : medication.dosage,
-                            dosage_unit         : medication.dosage_unit,
-                            start_date          : medication.start_date,
-                            end_date            : medication.end_date,
+                            id                  : med.id,
+                            user_id             : med.user_id,
+                            name                : med.name,
+                            dosage              : med.dosage,
+                            dosage_unit         : med.dosage_unit,
+                            start_date          : med.start_date,
+                            end_date            : med.end_date,
                             time                : timeArr[j],
-                            days_of_week        : medication.days_of_week,
-                            notes               : medication.notes,
-                            notification        : medication.notification,
-                            notification_before : medication.notification_before,
-                            hits                : medication.hits,
-                            misses              : medication.misses
+                            days_of_week        : med.days_of_week,
+                            notes               : med.notes,
+                            notification        : med.notification,
+                            notification_before : med.notification_before,
+                            hits                : med.hits,
+                            misses              : med.misses
                             }
                         );
                     });
                 });
+
+                medsByTime.sort().foreach(function(medTime) {
+
+                });
             });
-             // res = giveMeJSON(dayArray)
+
             res.status(200).json(medsByTime);
         });
     });
