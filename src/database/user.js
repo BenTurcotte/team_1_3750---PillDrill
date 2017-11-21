@@ -50,12 +50,16 @@ module.exports = function(db) {
         createTable() {
             db.run(`CREATE TABLE IF NOT EXISTS ${USER_TABLE_NAME} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                firstName TEXT NOT NULL,
+                lastName TEXT NOT NULL,
                 email TEXT UNIQUE,
+                phoneNumber TEXT,
                 passwordHash TEXT NOT NULL,
                 passwordSalt TEXT NOT NULL,
                 accountType TEXT NOT NULL,
                 loginToken TEXT,
-                loginTokenExpires TEXT
+                loginTokenExpires TEXT,
+                lastLoginDate TEXT
             )`);
         },
 
@@ -163,10 +167,40 @@ module.exports = function(db) {
         },
 
         /**
-         * Checks the loginToken against the email
+         * Checks the loginToken against the id
          * The callback is (err). The loginToken is assumed to be good if err is undefined
+         * Last Updated: Nov 20th/2017
+         * Author: Tamara 
          */
+<<<<<<< HEAD
         checkLogin(email, loginToken, callback) {
+=======
+        checkLogin(id, loginToken, callback) {            
+            //Check if given loginTokin matched the loginTokin in the databse (using id)
+            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id, loginToken = $loginToken`, {
+                $id: id,
+                $loginToken: loginToken
+            }, (err, row) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                if (!row) {
+                    //callback(new Error("Couldn't get a row with given loginToken and id"));
+                    callback(new Error("Login session has expired"));
+                    return;
+                }
+
+                //Check that loginTokenDate has not passed
+                currDate = new Date()
+                if (currDate > row.loginTokenExpires){
+                    callback(new Error("Login session has expired"));
+                    return;
+                }            
+        
+            })            
+>>>>>>> 8cca8a62408de787702c90a752cff4fcfd3cba54
         }
     };
 };
