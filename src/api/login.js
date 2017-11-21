@@ -44,22 +44,17 @@ module.exports = function(router) {
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session has expired."));
                 return;
-            }
-
-            else if (creator.accountType == "Admin") {
-                
+            } else if (creator.accountType == "Admin") {  
                 db.user.createNewUser(params.new_user, function(err) {
-                    
                     if (err) {
                         res.status(500).json(utils.createErrorObject("Couldn't create the user"));
                         return;
                     }
-        
-                    res.status(200).json("the account was successfully created.");
+                    
+                    //It assumed to be a success if it wasn't an error
+                    res.status(200).json(utils.createErrorObject());
                 });
-            }
-
-            else {
+            } else {
                 res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
             }
 
