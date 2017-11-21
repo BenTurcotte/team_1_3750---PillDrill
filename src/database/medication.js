@@ -196,13 +196,14 @@ module.exports = function(db, userDB) {
                     return;
                 }               
                 callback();
-<<<<<<< HEAD
             })
         },
 /*
         /* This will get information from  the medication table
          * searching by medication id and user id
+         * 
          * Columns (as specified in the google doc):
+         * - id
          * - name
          * - dosage_amount
          * - dosage_unit
@@ -216,10 +217,9 @@ module.exports = function(db, userDB) {
          * - hits
          * - misses
         */
-        getMedications(medId,uID,callback){
-            db.get(`SELECT * FROM ${USER_TABLE_NAME} 
-                    WHERE $medId = id,  $uID = user_id`,{
-                $medId: medId,
+        getMedications(uID,callback){
+            db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}
+                    WHERE $uID = user_id`,{
                 $uID: uID,
             },(err, row) => {
                 if (err) {
@@ -232,19 +232,20 @@ module.exports = function(db, userDB) {
                     return;
                 }
 
-                callback({
-                    $medName: medName,
-                    $medDosage: medDosage,
-                    $medDosageUnit: medDosageUnit, 
-                    $startDate: startDate, 
-                    $endDate: endDate, 
-                    $times: times,
-                    $DaysOfWeek: DaysOfWeek, 
-                    $Note: Note, 
-                    $Notif: Notif, 
-                    $Notif_before: Notif_before,
-                    $Hits: Hits, 
-                    $Misses: Misses 
+                callback({ 
+                    $medId: row.medId, 
+                    $medName: row.medName,
+                    $medDosage: row.medDosage,
+                    $medDosageUnit: row.medDosageUnit, 
+                    $startDate: row.startDate, 
+                    $endDate: row.endDate, 
+                    $times: row.times,
+                    $DaysOfWeek: row.DaysOfWeek, 
+                    $Note: row.Note, 
+                    $Notif: row.Notif, 
+                    $Notif_before: row.Notif_before,
+                    $Hits: row.Hits, 
+                    $Misses: row.Misses 
                 });
             })
         }
