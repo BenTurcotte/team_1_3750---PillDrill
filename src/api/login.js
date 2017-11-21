@@ -31,14 +31,14 @@ module.exports = function(router) {
 
     //Tries to create an account
     router.post("/createAccount", function(req, res) {
-        
+        //should accept login_tokin, creator_id, new_user
         var params = utils.checkParameters(req, "loginToken", "new_user", "creator");
         
         if (!params) {
             res.status(400).json(utils.createErrorObject("Could not find loginToken, new_user object, and/or creator object"));
             return;
         }
-
+        
         db.user.checkLogin(params.creator.user_id, params.loginToken, (err) => {
             
             if (err) {

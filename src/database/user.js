@@ -69,8 +69,19 @@ module.exports = function(db) {
          * The callback is (err) and will be called when the user has been created, or not.
          * err will be truthy if an error exists
          */
-        createNewUser(email, rawPassword, account_type, callback) {
-            hashPassword(rawPassword, (err, hashedPassword, salt) => {
+        
+         /**
+         * "new_user" : {
+            "firstName" : String,
+            "lastName" : String,
+            "phoneNum" : String,
+            "email" : String,
+            "password" : String,
+            "accountType" : String
+        }
+         */
+        createNewUser(new_user, callback){         
+            hashPassword(new_user.password, (err, hashedPassword, salt) => {
                 if (err) {
                     callback(err);
                     return;
@@ -79,20 +90,29 @@ module.exports = function(db) {
                 //Insert the new user into the DB with the mapped data
                 //Callback the callback with maybe an error once it completes
                 db.run(`INSERT INTO ${USER_TABLE_NAME} (
+                    firstName,
+                    lastName,
                     email,
+                    phoneNumber,
                     passwordHash,
                     passwordSalt,
                     account_type
                 ) VALUES (
+                    $firstName,
+                    $lastName,                    
                     $email,
+                    $phoneNumber
                     $hashedPassword,
                     $salt,
                     $account_type
                 )`, {
-                    $email: email,
+                    $firstName: new_user.firstName,
+                    $lastName: new_user.lastName,
+                    $email: new_user.email,
+                    $phoneNumber: new_user.phoneNumber,
                     $hashedPassword: hashedPassword,
                     $salt: salt,
-                    $account_type: account_type
+                    $account_type: new_user.account_type
                 }, (dbErr) => {
                     if (dbErr) {
                         callback(dbErr);
