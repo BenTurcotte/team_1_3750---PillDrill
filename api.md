@@ -38,7 +38,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 # API Endpoints
 ## POST /users/createAccount
 ### Request
-```json
+```javascript
 {
     "email"       : String, // their email to use to login
     "password"    : String, // their password to use to login
@@ -47,7 +47,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 ### Response
-```json
+```javascript
 {
     "error" : String // error string or null
 }
@@ -55,7 +55,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 ## POST /users/login
 ### Request
-```json
+```javascript
 {
     "email"    : String, // email to attempt login
     "password" : String, // password to attempt login
@@ -63,7 +63,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 ### Response
-```json
+```javascript
 {
     "error"             : String, // error string or null>
     "user_id"           : Number, // user id
@@ -75,7 +75,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 ## POST /medication/getSchedule
 ### Request
-```json
+```javascript
 {
     "user_id"    : String, // user's id
     "loginToken" : String  // login token retrieved during login
@@ -83,7 +83,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 ### Response
-```json
+```javascript
 // 7 element array, one for each day
 // each day contains a list of meds to be taken that day
 // meds are sorted by time
@@ -133,7 +133,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 ## POST /medication/updateMedication
 ### Request
-```json
+```javascript
 {
     "loginToken" : String, // login token obtain upon logging in
     "med" :                // medication object
@@ -157,7 +157,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 ### Response
-```json
+```javascript
 {
     "msg" : String // success message
 }
@@ -165,7 +165,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 ## POST /medication/deleteMedication
 ### Request
-```json
+```javascript
 {
     "loginToken" : String, // login token obtain upon logging in
     "user_id"    : String, // user id
@@ -174,7 +174,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 ### Response
-```json
+```javascript
 {
     "msg" : String // success message
 }
