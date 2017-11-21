@@ -49,9 +49,33 @@ module.exports = function(db, userDB) {
         },
 
         deleteMedication(medID, uID) {
-            db.run(`DELETE FROM ${MEDICATION_TABLE_NAME} where medId = id,
+            db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where medId = id,
             uID = user_id
             )`);
+        },
+
+        addMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, Times,
+            DaysOfWeek, Note, Notif, Notif_before, Hit, Miss ){
+                
+            db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT UNIQUE,
+            name TEXT NOT NULL,
+            dosage INTEGER,
+            dosage_unit TEXT NOT NULL,/
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            times TEXT NOT NULL,
+            days_of_week TEXT NOT NULL,
+            notes TEXT,
+            notification INTEGER,
+            notification_before INTEGER,
+            hits INTEGER,
+            misses INTEGER)
+
+            VALUES (medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, Times,
+            DaysOfWeek, Note, Notif, Notif_before, Hit, Miss );
+            `);
         }
     };
 }

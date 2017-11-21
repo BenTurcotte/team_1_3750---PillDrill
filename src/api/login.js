@@ -35,7 +35,7 @@ module.exports = function(router) {
         }
 
         //Will probably need to make rules for who can create accounts
-
+        
         db.user.createNewUser(params.email, params.password, params.accountType, function(err) {
             if (err) {
                 res.status(500).json(utils.createErrorObject("Couldn't create the user"));
