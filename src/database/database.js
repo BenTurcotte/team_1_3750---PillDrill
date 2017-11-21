@@ -31,24 +31,7 @@ if (!init) {
     //Create any tables we need that don't exist
     userDB.createTable();
     medDB.createTable();
-
-    var exist = ture;   
 }
-
-//drop the exist tables
-if(exist) {
-    if (process.env.NODE_ENV == "development") {
-        //Open an anonymous database on the file system for testing
-        //It will be destroyed when closing the database
-        var db = new sqlite.Database("");
-    } else {
-        //Open the database connection
-        var db = new sqlite.Database("clc.db");
-    }
-        //delete medication from medication table
-        medDB.deleteMedication(medID, uID);
-}
-
 
 //Export an object full of functions to call on the database
 module.exports = {

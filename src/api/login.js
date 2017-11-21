@@ -22,7 +22,7 @@ module.exports = function(router) {
             }
 
             //Send the userData as a JSON object if it worked
-            res.status(200).json(userData);
+            res.status(200).json(utils.createResponseObject(userData));
         });
     });
 

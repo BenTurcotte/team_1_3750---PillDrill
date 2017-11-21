@@ -256,7 +256,7 @@ module.exports = function(db) {
                 
                 //If we didn't get an error while updating, we won't get an error here
                 db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $userID`, {
-                    $userID = client.userID
+                    $userID: client.userID
                 }, (row) => {
                     callback(undefined, {
                         firstName: row.firstName,

@@ -56,8 +56,8 @@ module.exports = function(db, userDB) {
             db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where id = $medID,
             user_id = $uID 
             )`,{
-                $uID = uID,
-                $medId = medID
+                $uID: uID,
+                $medId: medID
             },(dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
