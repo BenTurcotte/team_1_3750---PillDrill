@@ -9,14 +9,15 @@ module.exports = function(router) {
     /*
     req has auth token and UID
     */
-    router.post("/GetMedications", function(req, res) {
+    router.post("/getMedications", function(req, res) {
         
     });
 
     /*
-    req has auth token and UID
+    req has loginToken, loginTokenExpires, accountType, and id
     */
-    router.post("/GetSchedule", function(req, res) {
+    router.post("/getSchedule", function(req, res) {
+        var params = utils.checkParameters(req, "loginToken", "loginTokenExpires", "accountType", "id");
         // authTok = req.body.authenticationToken;
         // check authentication token with db to grant access
         // retrieve all medication for the given userID from the db
@@ -42,14 +43,14 @@ module.exports = function(router) {
     req has auth token, UID, and medID
     if medID is not provided, a new medication should be added
     */
-    router.post("/UpdateMedication", function(req, res) {
+    router.post("/updateMedication", function(req, res) {
 
     });
     
     /*
     req has auth token, UID, and medID
     */
-    router.post("/DeleteMedication", function(req, res) {
+    router.post("/deleteMedication", function(req, res) {
 
     });
 };
