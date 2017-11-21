@@ -6,17 +6,20 @@ const db = require("../database/database");
 const utils = require("../utils");
 
 module.exports = function(router) {
+    
     //Tries to create a new login token for the given account
     router.post("/login", function(req, res) {
+        
         var params = utils.checkParameters(req, "email", "password");
+        
         if (!params) {
             res.status(400).json(utils.createErrorObject("Email and password are required"));
             return;
         }
 
         db.user.login(params.email, params.password, function(err, userData) {
+            
             if (err) {
-                // res.status(400).json(utils.createErrorObject(err.stack));
                 res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
                 return;
             }
@@ -28,26 +31,38 @@ module.exports = function(router) {
 
     //Tries to create an account
     router.post("/createAccount", function(req, res) {
-        var params = utils.checkParameters(req, "email", "password", "accountType");
+        
+        var params = utils.checkParameters(req, "loginToken", "new_user", "creator");
+        
         if (!params) {
-            res.status(400).json(utils.createErrorObject("Email, password and accountType are required"));
+            res.status(400).json(utils.createErrorObject("Could not find loginToken, new_user object, and/or creator object"));
             return;
         }
 
-        //Will probably need to make rules for who can create accounts
-        
-        db.user.createNewUser(params.email, params.password, params.accountType, function(err) {
+        db.user.checkLogin(params.creator.user_id, params.loginToken, (err) => {
+
             if (err) {
-                res.status(500).json(utils.createErrorObject("Couldn't create the user"));
+                res.status(400).json(utils.createErrorObject("Session has expired."));
                 return;
             }
 
-            res.status(200).json(utils.createErrorObject());
-        });
-    });
-
-    //Tries to verify a login token with an email
-    router.post("/checkToken", function(req, res) {
+            else if (creator.accountType == "Admin") {
+                
+                db.user.createNewUser(params.new_user, function(err) {
+                    
+                    if (err) {
+                        res.status(500).json(utils.createErrorObject("Couldn't create the user"));
+                        return;
+                    }
         
+                    res.status(200).json("the account was successfully created.");
+                });
+            }
+
+            else {
+                res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
+            }
+
+        });
     });
 };
