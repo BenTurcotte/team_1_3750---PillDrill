@@ -196,6 +196,7 @@ module.exports = function(db, userDB) {
                     return;
                 }               
                 callback();
+<<<<<<< HEAD
             })
         },
 /*
