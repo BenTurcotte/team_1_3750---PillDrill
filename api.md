@@ -1,3 +1,13 @@
+# Announcement!
+Please note the naming conventions used for every element name of a json object.  Every name uses an underbar (_) between words.
+```
+eg. old name: loginToken
+    new name: login_token
+```
+There were some inconsistencies between api & db variable names being passed back and fourth. Any json object that could be passed to the front end at some point will follow the naming convention above.
+
+---
+
 # General Info
 This file describes all of the public endpoints that can be accessed for this project's backend.
 These are called APIs, and come in the form of HTTP requests.
@@ -42,22 +52,22 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "loginToken"  : String,
-    "new_user"    : {
-        "user_id"           : Number,
-        "email"             : String,
-        "password"          : String,
-        "loginToken"        : String,
-        "loginTokenExpires" : String,
-        "accountType"       : String
-    }
-    "creator"     : {
-        "user_id"           : Number,
-        "email"             : String,
-        "password"          : String,
-        "loginToken"        : String,
-        "loginTokenExpires" : String,
-        "accountType"       : String
+    "login_token" : String,
+    "new_user" : {
+        "user_id"             : Number,
+        "email"               : String,
+        "password"            : String,
+        "login_token"         : String,
+        "login_token_expires" : String,
+        "account_type"        : String
+    },
+    "creator" : {
+        "user_id"             : Number,
+        "email"               : String,
+        "password"            : String,
+        "login_token"         : String,
+        "login_token_expires" : String,
+        "account_type"        : String
     }
 }
 ```
@@ -83,11 +93,11 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Response
 ```javascript
 {
-    "error"             : String,  // error string or null>
-    "user_id"           : Number,  // user id
-    "loginToken"        : String,  // the token that can be used to verify correct login
-    "loginTokenExpires" : String,  // format: YYYYMMDDHHmm // when then loginToken will expire
-    "accountType"       : String   // the type of the account that just logged in
+    "error"               : String,  // error string or null>
+    "user_id"             : Number,  // user id
+    "login_token"         : String,  // the token that can be used to verify correct login
+    "login_token_expires" : String,  // format: YYYYMMDDHHmm // when then login_token will expire
+    "account_type"        : String   // the type of the account that just logged in
 }
 ```
 
@@ -97,8 +107,8 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "user_id"    : String,  // user's id
-    "loginToken" : String   // login token retrieved during login
+    "user_id"     : String,  // user's id
+    "login_token" : String   // login token retrieved during login
 }
 ```
 
@@ -106,20 +116,20 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```javascript
 [
     {
-        med_id              : String,  // medication id
-        user_id             : String,  // user id
-        name                : String,  // name of medication
-        dosage              : Number,  // 
-        dosage_unit         : String,  // 
-        start_date          : String,  // format: YYYYMMDD
-        end_date            : String,  // format: YYYYMMDD
-        time                : String,  // format: HHmm
-        days_of_week        : String,  // 
-        notes               : String,  // 
-        notification        : Number,  // on\off
-        notification_before : Number,  //
-        hits                : Number,  // count of times user HAS taken this med
-        misses              : Number   // count of times user HAS NOT taken this med
+        "med_id"              : String,  // medication id
+        "user_id"             : String,  // user id
+        "name"                : String,  // name of medication
+        "dosage"              : Number,  // 
+        "dosage_unit"         : String,  // 
+        "start_date"          : String,  // format: YYYYMMDD
+        "end_date"            : String,  // format: YYYYMMDD
+        "time"                : String,  // format: HHmm
+        "days_of_week"        : String,  // 
+        "notes"               : String,  // 
+        "notification"        : Number,  // on\off
+        "notification_before" : Number,  //
+        "hits"                : Number,  // count of times user HAS taken this med
+        "misses"              : Number   // count of times user HAS NOT taken this med
     },
     {
         // next medication
@@ -138,7 +148,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```javascript
 {
     "user_id"    : String,  // user's id
-    "loginToken" : String   // login token retrieved during login
+    "login_token" : String   // login token retrieved during login
 }
 ```
 
@@ -197,7 +207,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "loginToken" : String, // login token obtain upon logging in
+    "login_token" : String, // login token obtain upon logging in
     "med" :                // medication object
         {
             "med_id"              : String,  // medication id
@@ -231,7 +241,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "loginToken" : String,  // login token obtain upon logging in
+    "login_token" : String,  // login token obtain upon logging in
     "user_id"    : String,  // user id
     "med_id"     : String   // medication id
 }

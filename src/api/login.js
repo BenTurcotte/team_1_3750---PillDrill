@@ -45,7 +45,7 @@ module.exports = function(router) {
                 res.status(400).json(utils.createErrorObject("Session has expired."));
                 return;
             }
-            else if (creator.accountType == "Admin") {  
+            else if (creator.account_type == "Admin") {  
                 
                 db.user.createNewUser(params.new_user, function(err) {
                 

@@ -7,13 +7,13 @@ const utils = require("../utils");
 module.exports = function(router) {
 
     /*
-    req has loginToken and user_id
+    req has login_token and user_id
     */
     router.post("/getMedications", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "user_id");
+        var params = utils.checkParameters(req, "login_token", "user_id");
         
-        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.user_id, params.login_token, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
@@ -33,15 +33,15 @@ module.exports = function(router) {
     });
 
     /*
-    req has loginToken, and id
+    req has login_token, and id
 
     !!! so far only sorts meds based on times, not days of the week !!!
     */
     router.post("/getSchedule", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "user_id");
+        var params = utils.checkParameters(req, "login_token", "user_id");
         
-        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.user_id, params.login_token, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
@@ -115,9 +115,9 @@ module.exports = function(router) {
     */
     router.post("/updateMedication", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "med");
+        var params = utils.checkParameters(req, "login_token", "med");
         
-        db.user.checkLogin(params.med.user_id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.med.user_id, params.login_token, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
@@ -150,9 +150,9 @@ module.exports = function(router) {
     */
     router.post("/deleteMedication", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "med_id", "user_id");
+        var params = utils.checkParameters(req, "login_token", "med_id", "user_id");
         
-        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.user_id, params.login_token, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));

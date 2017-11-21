@@ -56,9 +56,9 @@ module.exports = function(db) {
                 phoneNumber TEXT,
                 passwordHash TEXT NOT NULL,
                 passwordSalt TEXT NOT NULL,
-                accountType TEXT NOT NULL,
-                loginToken TEXT,
-                loginTokenExpires TEXT,
+                account_type TEXT NOT NULL,
+                login_token TEXT,
+                login_token_expires TEXT,
                 lastLoginDate TEXT
             )`);
         },
@@ -69,7 +69,7 @@ module.exports = function(db) {
          * The callback is (err) and will be called when the user has been created, or not.
          * err will be truthy if an error exists
          */
-        createNewUser(email, rawPassword, accountType, callback) {
+        createNewUser(email, rawPassword, account_type, callback) {
             hashPassword(rawPassword, (err, hashedPassword, salt) => {
                 if (err) {
                     callback(err);
@@ -82,17 +82,17 @@ module.exports = function(db) {
                     email,
                     passwordHash,
                     passwordSalt,
-                    accountType
+                    account_type
                 ) VALUES (
                     $email,
                     $hashedPassword,
                     $salt,
-                    $accountType
+                    $account_type
                 )`, {
                     $email: email,
                     $hashedPassword: hashedPassword,
                     $salt: salt,
-                    $accountType: accountType
+                    $account_type: account_type
                 }, (dbErr) => {
                     if (dbErr) {
                         callback(dbErr);
@@ -108,7 +108,7 @@ module.exports = function(db) {
          * Creates a new login token if the correct password is given
          * The callback is (err, userData). If there is no error, err is undefined, and userData is
          * all of the data associated with the user that the front-end might need upon login
-         * It destroys the old loginToken if it succeeds.
+         * It destroys the old login_token if it succeeds.
          */
         login(email, rawPassword, callback) {
             //Get the hashed password and salt associated with the email
@@ -136,28 +136,28 @@ module.exports = function(db) {
                     //Check for a correct password
                     if (passwordHash === row.passwordHash) {
                         //Generate the new login token for this account
-                        var loginToken = createSalt();
+                        var login_token = createSalt();
 
                         //Set the expiry date to 7 days in the future
                         var future = new Date();
                         future.setDate(future.getDate() + 7);
 
-                        var loginTokenExpires = future.toJSON();
+                        var login_token_expires = future.toJSON();
 
                         //If we were able to get the row with email, we can't get an error here
-                        db.run(`UPDATE ${USER_TABLE_NAME} SET loginToken = $loginToken,
-                        loginTokenExpires = $loginTokenExpires
+                        db.run(`UPDATE ${USER_TABLE_NAME} SET login_token = $login_token,
+                        login_token_expires = $login_token_expires
                         WHERE email = $email`, {
-                            $loginToken: loginToken,
-                            $loginTokenExpires: loginTokenExpires,
+                            $login_token: login_token,
+                            $login_token_expires: login_token_expires,
                             $email: email
                         });
 
                         callback(undefined, {
                             user_id: row.id,
-                            loginToken: loginToken,
-                            loginTokenExpires: loginTokenExpires,
-                            accountType: row.accountType
+                            login_token: login_token,
+                            login_token_expires: login_token_expires,
+                            account_type: row.account_type
                         });
                     } else {
                         callback(new Error("Passwords don't match"));
@@ -168,16 +168,16 @@ module.exports = function(db) {
         },
 
         /**
-         * Checks the loginToken against the id
-         * The callback is (err). The loginToken is assumed to be good if err is undefined
+         * Checks the login_token against the id
+         * The callback is (err). The login_token is assumed to be good if err is undefined
          * Last Updated: Nov 20th/2017
          * Author: Tamara 
          */
-        checkLogin(id, loginToken, callback) {            
+        checkLogin(id, login_token, callback) {            
             //Check if given loginTokin matched the loginTokin in the databse (using id)
-            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id, loginToken = $loginToken`, {
+            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id, login_token = $login_token`, {
                 $id: id,
-                $loginToken: loginToken
+                $login_token: login_token
             }, (err, row) => {
                 if (err) {
                     callback(err);
@@ -185,14 +185,14 @@ module.exports = function(db) {
                 }
 
                 if (!row) {
-                    //callback(new Error("Couldn't get a row with given loginToken and id"));
+                    //callback(new Error("Couldn't get a row with given login_token and id"));
                     callback(new Error("Login session has expired"));
                     return;
                 }
 
-                //Check that loginTokenDate has not passed
+                //Check that login_tokenDate has not passed
                 currDate = new Date()
-                if (currDate > row.loginTokenExpires){
+                if (currDate > row.login_token_expires){
                     callback(new Error("Login session has expired"));
                     return;
                 }       
@@ -204,7 +204,7 @@ module.exports = function(db) {
 
         /**
         * Given an id, returns a JSON object containing the required user information:
-        * firstName, lastName, email, phoneNumber, and accountType
+        * firstName, lastName, email, phoneNumber, and account_type
         * Last Updated: NOv 20th/ 2017
         * Author: Tamara
         */
@@ -212,7 +212,7 @@ module.exports = function(db) {
             //Get user information from Users table in DB (using given id)
             db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id`, {
                 $id: id,
-                $loginToken: loginToken
+                $login_token: login_token
             }, (err, row) => {
                 if (err) {
                     callback(err);
@@ -230,7 +230,7 @@ module.exports = function(db) {
                     lastName: row.lastName,
                     email: row.email,
                     phoneNumber: row.phoneNumber,
-                    accountType: row.accountType
+                    account_type: row.account_type
                 });
             })
         },
