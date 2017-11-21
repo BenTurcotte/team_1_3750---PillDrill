@@ -14,29 +14,43 @@ module.exports = function(router) {
     });
 
     /*
-    req has loginToken, loginTokenExpires, accountType, and id
+    req has loginToken, and id
     */
     router.post("/getSchedule", function(req, res) {
-        var params = utils.checkParameters(req, "loginToken", "loginTokenExpires", "accountType", "id");
-        // authTok = req.body.authenticationToken;
-        // check authentication token with db to grant access
-        // retrieve all medication for the given userID from the db
-        /*
-          for every medication with more than one specified time
-          - make as many copies of the medication as there are unique times
-          - delete the medication with multiple times (master copy)
-        */
-        // sort the list of medications by time
-        // create an array of length 7 (one element per day of the week)
-        /*
-          for each day in the array
-            for each medication in the list of medications
-              if the medication is to be taken on the day in question,
-              AND the day in question is not past the end date or before the
-              start date
-                add it to the list at the day specified by the array index
-        */
-        // res = giveMeJSON(dayArray)
+        var params = utils.checkParameters(req,
+                    "loginToken",
+                    "id");
+        db.user.checkLogin(params.id, params.loginToken, (err, stuff) => {
+            if (err) {
+                res.status(400).json(utils.createErrorObject("Session expired."));
+                return;
+            }
+            db.med.getMedications(params.id, (err, allMeds) => {
+                var medsByTime = [];
+                allMeds.foreach(function(medication) {
+                    medication.times.split(",").sort().foreach(function(time) {
+                        medsByTime.push({
+                            id                  : medication.id,
+                            user_id             : medication.user_id,
+                            name                : medication.name,
+                            dosage              : medication.dosage,
+                            dosage_unit         : medication.dosage_unit,
+                            start_date          : medication.start_date,
+                            end_date            : medication.end_date,
+                            time                : timeArr[j],
+                            days_of_week        : medication.days_of_week,
+                            notes               : medication.notes,
+                            notification        : medication.notification,
+                            notification_before : medication.notification_before,
+                            hits                : medication.hits,
+                            misses              : medication.misses
+                        });
+                    });
+                });
+            });
+             // res = giveMeJSON(dayArray)
+            res.status(200).json(medsByTime);
+        });
     });
 
     /*
