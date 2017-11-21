@@ -27,7 +27,7 @@ module.exports = function(router) {
                     return;
                 }
 
-                res.status(200).json(allMeds);
+                res.status(200).json(utils.createResponseObject(allMeds));
             });
         });
     });
@@ -104,7 +104,7 @@ module.exports = function(router) {
                     }
                 });
 
-                res.status(200).json(schedule);
+                res.status(200).json(utils.createResponseObject(schedule));
             });
         });
     });
@@ -130,7 +130,7 @@ module.exports = function(router) {
                         res.status(400).json(utils.createErrorObject("Unable to update medication."));
                         return;
                     }
-                    res.status(200).json({msg : "successfully updated medication!"});
+                    res.status(200).json(utils.createResponseObject("successfully updated medication!"));
                 });
             }
             else {
@@ -139,7 +139,7 @@ module.exports = function(router) {
                         res.status(400).json(utils.createErrorObject("Unable to add medication."));
                         return;
                     }
-                    res.status(200).json({msg : "successfully added medication!"});
+                    res.status(200).json(utils.createResponseObject("successfully added medication!"));
                 });
             }
         });
@@ -164,7 +164,6 @@ module.exports = function(router) {
                     res.status(400).json(utils.createErrorObject("Unable to delete medication."));
                     return;
                 }
-                res.status(200).json({"msg" : "success!"});
             });
         });
     });
