@@ -35,7 +35,10 @@ where you replace param1 with an integer or whichever type is needed.
 Calling that endpoint might look like https://131.104.180.41:8000/thingWithParameter/22.
 ```
 
+---
 # API Endpoints
+
+---
 ## POST /users/createAccount
 ### Request
 ```javascript
@@ -53,6 +56,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 }
 ```
 
+---
 ## POST /users/login
 ### Request
 ```javascript
@@ -73,6 +77,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 }
 ```
 
+---
 ## POST /medication/getSchedule
 ### Request
 ```javascript
@@ -131,6 +136,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ]
 ```
 
+---
 ## POST /medication/updateMedication
 ### Request
 ```javascript
@@ -163,6 +169,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 }
 ```
 
+---
 ## POST /medication/deleteMedication
 ### Request
 ```javascript
