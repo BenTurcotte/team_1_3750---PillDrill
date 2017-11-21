@@ -29,7 +29,8 @@ module.exports = function(router) {
                 var medsByTime = [];
                 allMeds.foreach(function(medication) {
                     medication.times.split(",").sort().foreach(function(time) {
-                        medsByTime.push({
+                        medsByTime.push(
+                            {
                             id                  : medication.id,
                             user_id             : medication.user_id,
                             name                : medication.name,
@@ -44,7 +45,8 @@ module.exports = function(router) {
                             notification_before : medication.notification_before,
                             hits                : medication.hits,
                             misses              : medication.misses
-                        });
+                            }
+                        );
                     });
                 });
             });
