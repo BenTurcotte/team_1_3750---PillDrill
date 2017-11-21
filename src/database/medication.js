@@ -52,10 +52,9 @@ module.exports = function(db, userDB) {
          * This will delete the medication
          * by searching medication ID
          */
-        deleteMedication(med_id, user_id) {
+        deleteMedication(med_id, user_id, callback) {
             db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where id = $med_id,
-            user_id = $user_id 
-            )`,{
+            user_id = $user_id)`,{
                 $user_id: user_id,
                 $med_id: med_id
             },(dbErr) => {
@@ -88,9 +87,9 @@ module.exports = function(db, userDB) {
          * link: https://docs.google.com/document/d/19EfGXJbhmD3z-u2Ud4jsdQaSt6Fuxf-8L5xDz8mQ5cc/edit?usp=sharing
          */
         addMedication(med, callback){        
-            db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (id, user_id, name, dosage, dosage_unit, start_date, end_date, 
-            times, days_of_week, notes, notification, notification_before, hits, misses)
-            VALUES ($med_id, $user_id, $name, $dosage, $dosage_unit, $start_date, $end_date, $times, $days_of_week, 
+            db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} id, user_id, name, dosage, dosage_unit, start_date, end_date, 
+            times, days_of_week, notes, notification, notification_before, hits, misses
+            VALUES $med_id, $user_id, $name, $dosage, $dosage_unit, $start_date, $end_date, $times, $days_of_week, 
             $notes, $notification, $notification_before, $hits, $misses`, {
                 $med_id: med.med_id,
                 $user_id: med.user_id, 
@@ -138,48 +137,31 @@ module.exports = function(db, userDB) {
          * 
          * will not drop it if id==NULL
          */
-        updateMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
-            DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
-
-            db.run(`UPDATE ${MEDICATION_TABLE_NAME} 
-            SET
-            user_id TEXT UNIQUE = $uID,
-            name TEXT NOT NULL = $medName,
-            dosage INTEGER = $medDosage,
-            dosage_unit TEXT NOT NULL = $medDosageUnit,
-            start_date TEXT NOT NULL = $startDate,,
-            end_date TEXT NOT NULL =  $endDate,
-            times TEXT NOT NULL = $times,
-            days_of_week TEXT NOT NULL = $DaysOfWeek,
-            notes TEXT = $Note,
-            notification INTEGER = $Notif,
-            notification_before INTEGER = $Notif_before, 
-            hits INTEGER =  $Hits,
-            misses INTEGER =  $Misses),
-
-            WHERE $medId = id;`,
-            {
-                $medId: medId,
-                $medName: medName,
-                $medDosage: medDosage,
-                $medDosageUnit: medDosageUnit, 
-                $uID: uID, 
-                $startDate: startDate, 
-                $endDate: endDate, 
-                $times: times,
-                $DaysOfWeek: DaysOfWeek, 
-                $Note: Note, 
-                $Notif: Notif, 
-                $Notif_before: Notif_before, 
-                $Hits: Hits, 
-                $Misses: Misses
-            }, (dbErr) => {
+        updateMedication(med, callback) { 
+            db.run(`UPDATE ${MEDICATION_TABLE_NAME} SET name = $name, dosage = $dosage, dosage_unit = $dosage_unit, 
+            start_date = $start_date, end_date = $end_date , times = $times, days_of_week = $days_of_week, notes = $notes, 
+            notification = $notification, notification_before = $notification_before, hits = $hits, misses = $misses
+            WHERE id = $med_id`, {                    
+                $name: med.name, 
+                $dosage: med.dosage, 
+                $dosage_unit: med.dosage_unit, 
+                $start_date: med.start_date, 
+                $end_date: med.end_date, 
+                $times: med.times, 
+                $days_of_week: med.days_of_week, 
+                $notes: med.notes, 
+                $notification: med.notification, 
+                $notification_before: med.notification_before, 
+                $hits: med.hits, 
+                $misses: med.misses,
+                $med_id: med.med_id
+            },(dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
                     return;
                 }               
                 callback();
-            })
+            })                                
         },
 /*
         /* This will get information from  the medication table
