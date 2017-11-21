@@ -46,6 +46,12 @@ module.exports = function(db, userDB) {
                 hits INTEGER,
                 misses INTEGER
             )`);
+        },
+
+        deleteMedication(medID, uID) {
+            db.run(`DELETE FROM ${MEDICATION_TABLE_NAME} where medId = id,
+            uID = user_id
+            )`);
         }
     };
-};
+}
