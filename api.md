@@ -84,20 +84,49 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 ### Response
 ```json
-{
-    "id"                  : Integer, // 
-    "user_id"             : String,  // 
-    "name"                : String,  // 
-    "dosage"              : Integer, // 
-    "dosage_unit"         : String,  // 
-    "start_date"          : String,  // YYYYMMDD
-    "end_date"            : String,  // YYYYMMDD
-    "time"                : String,  // HHMM 24 hour
-    "day"                 : Integer  // offset from current date (0 is today, 1 is tomorrow, etc.)
-    "notes"               : String,  // 
-    "notification"        : Integer, // 0 or 1 (on or off)
-    "notification_before" : Integer, // # of mins before 'time' that a notification is to be sent
-    "hits"                : Integer, // count of # of times user HAS taking the medication
-    "misses"              : Integer  // count of # of times user HAS NOT taking the medication
-}
+// 7 element array, one for each day
+// each day contains a list of meds to be taken that day
+// meds are sorted by time
+// each med is an abbreviated version of a full medication record
+[
+    // Sunday
+    [
+        {
+            "id"           : String,  // medication id
+            "user_id"      : String,  // user id
+            "name"         : String,  // 
+            "dosage"       : Integer, // 
+            "dosage_unit"  : String,  // 
+            "time"         : String,  // 24 hour time, format --> HHMM
+            "notes"        : String,  // 
+            "notification" : Integer  // integer used as on/off for notifications
+        },
+        {
+            // next medication
+        },
+        {
+            // etc.
+        }
+    ],
+    
+    // Monday
+    [
+        {
+            // same format as above
+        },
+        {
+            // etc.
+        }
+    ],
+
+    // ...
+    [
+        // ...
+    ],
+
+    // Saturday
+    [
+        // ...
+    ]
+]
 ```

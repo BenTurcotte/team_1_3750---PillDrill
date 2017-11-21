@@ -16,7 +16,7 @@ module.exports = function(router) {
     /*
     req has loginToken, and id
 
-    * !!! so far only sorts meds based on times, not days of the week !!!
+    !!! so far only sorts meds based on times, not days of the week !!!
     */
     router.post("/getSchedule", function(req, res) {
         
@@ -36,10 +36,10 @@ module.exports = function(router) {
                     return;
                 }
                 
-                var medsByTime = [];
-                var schedule   = [];
-                var day        = [];
-                const today    = Date.getDay();
+                var medsByTime    = [];
+                var schedule      = [[],[],[],[],[],[],[]];
+                var day           = [];
+                const today = new Date();
                 
                 allMeds.foreach(function(med) {
                     med.times.split(",").sort().foreach(function(time) {
@@ -64,12 +64,29 @@ module.exports = function(router) {
                     });
                 });
 
-                medsByTime.sort().foreach(function(medTime) {
-
+                medsByTime.sort().foreach(function(med) {
+                    var days = med.days_of_week.split(",");
+                    var i = 0;
+                    for (i = 0; i < days.length; i++) {
+                        if (days[i] == 1) {
+                            schedule[i].push(
+                                {
+                                    id                  : med.id,
+                                    user_id             : med.user_id,
+                                    name                : med.name,
+                                    dosage              : med.dosage,
+                                    dosage_unit         : med.dosage_unit,
+                                    time                : med.time,
+                                    notes               : med.notes,
+                                    notification        : med.notification
+                                }
+                            );
+                        }
+                    }
                 });
-            });
 
-            res.status(200).json(medsByTime);
+                res.status(200).json(schedule);
+            });
         });
     });
 
