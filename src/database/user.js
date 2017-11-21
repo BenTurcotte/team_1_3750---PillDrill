@@ -154,7 +154,7 @@ module.exports = function(db) {
                         });
 
                         callback(undefined, {
-                            userID: row.id,
+                            user_id: row.id,
                             loginToken: loginToken,
                             loginTokenExpires: loginTokenExpires,
                             accountType: row.accountType

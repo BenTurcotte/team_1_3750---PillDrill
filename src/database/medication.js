@@ -217,36 +217,44 @@ module.exports = function(db, userDB) {
          * - hits
          * - misses
         */
-        getMedications(uID,callback){
+        getMedications(user_id,callback){
             db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}
-                    WHERE $uID = user_id`,{
-                $uID: uID,
-            },(err, row) => {
+                    WHERE user_id = $user_id`,{
+                $user_id: user_id,
+            },(err, rows) => {
                 if (err) {
                     callback(err);
                     return;
                 }
 
-                if(!row){
-                    callback(err);
+                if(!rows){
+                    callback(new Error("User has no medicatons"));
                     return;
                 }
 
-                callback({ 
-                    $medId: row.medId, 
-                    $medName: row.medName,
-                    $medDosage: row.medDosage,
-                    $medDosageUnit: row.medDosageUnit, 
-                    $startDate: row.startDate, 
-                    $endDate: row.endDate, 
-                    $times: row.times,
-                    $DaysOfWeek: row.DaysOfWeek, 
-                    $Note: row.Note, 
-                    $Notif: row.Notif, 
-                    $Notif_before: row.Notif_before,
-                    $Hits: row.Hits, 
-                    $Misses: row.Misses 
-                });
+                var medicationArray = [];
+                rows.array.forEach(row => {
+                    medicationArray.push(
+                        {
+                            med_id              : row.id,  
+                            user_id             : row.user_id,  
+                            name                : row.name,  
+                            dosage              : row.dosage,  
+                            dosage_unit         : row.dosage_unit,  
+                            start_date          : row.start_date,  
+                            end_date            : row.end_date,  
+                            times               : row.times,  
+                            days_of_week        : row.days_of_week,  
+                            notes               : row.notes,  
+                            notification        : row.notification,  
+                            notification_before : row.notification_before,  
+                            hits                : row.hits,  
+                            misses              : row.misses
+                        }
+                    )
+                    
+                });   
+                callback(undefined, medicationArray);             
             })
         }
     };
