@@ -10,6 +10,7 @@ module.exports = function(db, userDB) {
          * This will create the medication table
          * 
          * Columns (as specified in the google doc):
+         * - id
          * - user_id
          * - name
          * - dosage_amount
@@ -47,12 +48,36 @@ module.exports = function(db, userDB) {
                 misses INTEGER
             )`);
         },
-
+        /**
+         * This will delete the medication
+         * by searching medication ID
+         */
         deleteMedication(medID, uID) {
             db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where medId = id,
             uID = user_id
             )`);
         },
+
+        /**
+         * This will add the medication table
+         * 
+         * Columns (as specified in the google doc):
+         * - user_id
+         * - name
+         * - dosage_amount
+         * - dosage_unit
+         * - start_date
+         * - end_date
+         * - times
+         * - days_of_week : each day stores a string with comma-separated times
+         * - notes
+         * - notification
+         * - notification_before
+         * - hits
+         * - misses
+         * 
+         * link: https://docs.google.com/document/d/19EfGXJbhmD3z-u2Ud4jsdQaSt6Fuxf-8L5xDz8mQ5cc/edit?usp=sharing
+         */
 
         addMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
             DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
@@ -101,7 +126,27 @@ module.exports = function(db, userDB) {
 
 
         /*
+        * This will update the medication table
+         * 
+         * Columns (as specified in the google doc):
+         * - user_id
+         * - name
+         * - dosage_amount
+         * - dosage_unit
+         * - start_date
+         * - end_date
+         * - times
+         * - days_of_week : each day stores a string with comma-separated times
+         * - notes
+         * - notification
+         * - notification_before
+         * - hits
         */
+        /**
+         * searching by medication id and update the meduacation table
+         * 
+         * will not drop it if id==NULL
+         */
         updateMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
             DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
 
