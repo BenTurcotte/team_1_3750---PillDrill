@@ -6,22 +6,24 @@ const db = require("../database/database");
 const utils = require("../utils");
 
 module.exports = function(router) {
+    
     //Tries to create a new login token for the given account
     router.post("/login", function(req, res) {
+        
         var params = utils.checkParameters(req, "email", "password");
+        
         if (!params) {
             res.status(400).json(utils.createErrorObject("Email and password are required"));
             return;
         }
 
         db.user.login(params.email, params.password, function(err, userData) {
+            
             if (err) {
-                // res.status(400).json(utils.createErrorObject(err.stack));
                 res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
                 return;
             }
 
-            //Send the userData as a JSON object if it worked
             res.status(200).json(userData);
         });
     });
