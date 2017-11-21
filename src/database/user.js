@@ -172,9 +172,6 @@ module.exports = function(db) {
          * Last Updated: Nov 20th/2017
          * Author: Tamara 
          */
-<<<<<<< HEAD
-        checkLogin(email, loginToken, callback) {
-=======
         checkLogin(id, loginToken, callback) {            
             //Check if given loginTokin matched the loginTokin in the databse (using id)
             db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id, loginToken = $loginToken`, {
@@ -200,7 +197,6 @@ module.exports = function(db) {
                 }            
         
             })            
->>>>>>> 8cca8a62408de787702c90a752cff4fcfd3cba54
         }
     };
 };
