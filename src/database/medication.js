@@ -62,7 +62,7 @@ module.exports = function(db, userDB) {
             user_id TEXT UNIQUE,
             name TEXT NOT NULL,
             dosage INTEGER,
-            dosage_unit TEXT NOT NULL,/
+            dosage_unit TEXT NOT NULL,
             start_date TEXT NOT NULL,
             end_date TEXT NOT NULL,
             times TEXT NOT NULL,
@@ -102,8 +102,48 @@ module.exports = function(db, userDB) {
 
         /*
         */
-        updateMedication(){
+        updateMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
+            DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
 
+            db.run(`UPDATE ${MEDICATION_TABLE_NAME} 
+            SET
+            user_id TEXT UNIQUE = $medName,
+            name TEXT NOT NULL = $medDosage,
+            dosage INTEGER = $medDosageUnit,
+            dosage_unit TEXT NOT NULL = $uID,
+            start_date TEXT NOT NULL = $startDate,,
+            end_date TEXT NOT NULL =  $endDate,
+            times TEXT NOT NULL = $times,
+            days_of_week TEXT NOT NULL = $DaysOfWeek,
+            notes TEXT = $Note,
+            notification INTEGER = $Notif,
+            notification_before INTEGER = $Notif_before, 
+            hits INTEGER =  $Hits,
+            misses INTEGER =  $Misses),
+
+            WHERE medId = id;`),
+            {
+                $medId: medId,
+                $medName: medName,
+                $medDosage: medDosage,
+                $medDosageUnit: medDosageUnit, 
+                $uID: uID, 
+                $startDate: startDate, 
+                $endDate: endDate, 
+                $times: times,
+                $DaysOfWeek: DaysOfWeek, 
+                $Note: Note, 
+                $Notif: Notif, 
+                $Notif_before: Notif_before, 
+                $Hits: Hits, 
+                $Misses: Misses
+            }, (dbErr) => {
+                if (dbErr) {
+                    callback(dbErr);
+                    return;
+                }               
+                callback();
+            }
         }
     };
 }
