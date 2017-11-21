@@ -154,7 +154,7 @@ module.exports = function(db) {
                         });
 
                         callback(undefined, {
-                            id: row.id,
+                            userID: row.id,
                             loginToken: loginToken,
                             loginTokenExpires: loginTokenExpires,
                             accountType: row.accountType
@@ -197,7 +197,7 @@ module.exports = function(db) {
                     return;
                 }       
                 
-                callback()
+                callback();
         
             })            
         },
@@ -208,7 +208,7 @@ module.exports = function(db) {
         * Last Updated: NOv 20th/ 2017
         * Author: Tamara
         */
-        getClientInfo(id){
+        getClientInfo(id, callback){
             //Get user information from Users table in DB (using given id)
             db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id`, {
                 $id: id,
@@ -225,13 +225,46 @@ module.exports = function(db) {
                 }
 
                 //Return a JSON object with 
-                return clientInfo = {
-                    "firstName": row.firstName,
-                    "lastName": row.lastName,
-                    "email": row.email,
-                    "phoneNumber": row.phoneNumber,
-                    "accountType": row.accountType
+                callback(undefined,{
+                    firstName: row.firstName,
+                    lastName: row.lastName,
+                    email: row.email,
+                    phoneNumber: row.phoneNumber,
+                    accountType: row.accountType
+                });
+            })
+        },
+
+        /**
+         * Given a JSON object (containing user information), updates the user information DB
+         * Last Updated: Nov 20th/2017
+         * Author: Tamara
+         */
+        updateClientInfo(client, callback){
+            db.run(`UPDATE ${USER_TABLE_NAME} SET firstName = $firstName, lastName = $lastName, 
+            email = $email, phoneNumber = $phoneNumnber WHERE id = $userID`, {
+                $firstName: client.firstName,
+                $lastName: client.lastName, 
+                $email: client.email, 
+                $phoneNumber: client.phoneNumnber,    
+                $userID: client.userID            
+            }, (err) => {
+                if (err) {
+                    callback(err);
+                    return;
                 }
+                
+                //If we didn't get an error while updating, we won't get an error here
+                db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $userID`, {
+                    $userID = client.userID
+                }, (err, row) => {
+                    callback(undefined, {
+                        firstName: row.firstName,
+                        lastName: row.lastName,
+                        email: row.email,
+                        phoneNumber: row.phoneNumber,
+                    });
+                })
             })
         }
     };
