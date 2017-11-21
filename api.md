@@ -40,16 +40,16 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```json
 {
-    "email": <their email to use to login> : String,
-    "password": <their password to use to login> : String,
-    "accountType": <the type of account to create> : String
+    "email"       : String, // their email to use to login
+    "password"    : String, // their password to use to login
+    "accountType" : String  // the type of account to create
 }
 ```
 
 ### Response
 ```json
 {
-    "error": <error string or null> : String
+    "error" : String // error string or null
 }
 ```
 
@@ -57,18 +57,47 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```json
 {
-    "email": <email to attempt login> : String,
-    "password": <password to attempt login> : String
+    "email"    : String, // email to attempt login
+    "password" : String, // password to attempt login
 }
 ```
 
 ### Response
 ```json
 {
-    "error": <error string or null> : String,
-    "id": <user id> : Number,
-    "loginToken": <the token that can be used to verify correct login> : String,
-    "loginTokenExpires": <when then loginToken will expire> : String,
-    "accountType": <the type of the account that just logged in> : String
+    "error"             : String, // error string or null>
+    "id"                : Number, // user id
+    "loginToken"        : String, // the token that can be used to verify correct login
+    "loginTokenExpires" : String, // when then loginToken will expire
+    "accountType"       : String  // the type of the account that just logged in
+}
+```
+
+## POST /medication/getSchedule
+### Request
+```json
+{
+    "id"         : String, // user's id
+    "loginToken" : String  // login token retrieved during login
+}
+```
+
+### Response
+```json
+{
+    "id"                  : Integer, // 
+    "user_id"             : String,  // 
+    "name"                : String,  // 
+    "dosage"              : Integer, // 
+    "dosage_unit"         : String,  // 
+    "start_date"          : String,  // YYYYMMDD
+    "end_date"            : String,  // YYYYMMDD
+    "time"                : String,  // HHMM 24 hour
+    "days_of_week"        : String,  // comma separated list of 7 bits (one bit per element)
+    "notes"               : String,  // 
+    "notification"        : Integer, // 0 or 1 (on or off)
+    "notification_before" : Integer, // # of mins before 'time' that a notification is to be sent
+    "hits"                : Integer, // count of # of times user HAS taking the medication
+    "misses"              : Integer  // count of # of times user HAS NOT taking the medication
 }
 ```

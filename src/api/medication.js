@@ -15,6 +15,8 @@ module.exports = function(router) {
 
     /*
     req has loginToken, and id
+
+    * !!! so far only sorts meds based on times, not days of the week !!!
     */
     router.post("/getSchedule", function(req, res) {
         var params = utils.checkParameters(req,
