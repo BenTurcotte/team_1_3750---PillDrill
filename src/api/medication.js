@@ -20,16 +20,16 @@ module.exports = function(router) {
     */
     router.post("/getSchedule", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "id");
+        var params = utils.checkParameters(req, "loginToken", "user_id");
         
-        db.user.checkLogin(params.id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
                 return;
             }
             
-            db.med.getMedications(params.id, (err, allMeds) => {
+            db.med.getMedications(params.user_id, (err, allMeds) => {
                 
                 if (err) {
                     res.status(400).json(utils.createErrorObject("Session expired."));
@@ -96,9 +96,9 @@ module.exports = function(router) {
     */
     router.post("/updateMedication", function(req, res) {
         
-        var params = utils.checkParameters(req, "loginToken", "id", "user_id", "med");
+        var params = utils.checkParameters(req, "loginToken", "med");
         
-        db.user.checkLogin(params.id, params.loginToken, (err, stuff) => {
+        db.user.checkLogin(params.med.user_id, params.loginToken, (err, stuff) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session expired."));
@@ -106,10 +106,22 @@ module.exports = function(router) {
             }
 
             if (params.id != null) {
-                db.med.updateMedication()
+                db.med.updateMedication(med, (err, success) => {
+                    if (err) {
+                        res.status(400).json(utils.createErrorObject("Unable to update medication."));
+                        return;
+                    }
+                    res.status(200).json({msg : "successfully updated medication!"});
+                });
             }
             else {
-
+                db.med.addMedication(med, (err, success) => {
+                    if (err) {
+                        res.status(400).json(utils.createErrorObject("Unable to add medication."));
+                        return;
+                    }
+                    res.status(200).json({msg : "successfully added medication!"});
+                });
             }
         });
     });
@@ -118,6 +130,23 @@ module.exports = function(router) {
     req has auth token, UID, and medID
     */
     router.post("/deleteMedication", function(req, res) {
+        
+        var params = utils.checkParameters(req, "loginToken", "med_id", "user_id");
+        
+        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
+            
+            if (err) {
+                res.status(400).json(utils.createErrorObject("Session expired."));
+                return;
+            }
 
+            db.med.deleteMedication(med_id, user_id, (err) => {
+                if (err) {
+                    res.status(400).json(utils.createErrorObject("Unable to delete medication."));
+                    return;
+                }
+                res.status(200).json({"msg" : "success!"});
+            });
+        });
     });
 };

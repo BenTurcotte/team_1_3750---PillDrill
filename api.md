@@ -66,7 +66,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```json
 {
     "error"             : String, // error string or null>
-    "id"                : Number, // user id
+    "user_id"           : Number, // user id
     "loginToken"        : String, // the token that can be used to verify correct login
     "loginTokenExpires" : String, // when then loginToken will expire
     "accountType"       : String  // the type of the account that just logged in
@@ -77,7 +77,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```json
 {
-    "id"         : String, // user's id
+    "user_id"    : String, // user's id
     "loginToken" : String  // login token retrieved during login
 }
 ```
@@ -135,12 +135,10 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```json
 {
-    "id"         : String, // medication id, create new medication if null
-    "user_id"    : String, // user id
     "loginToken" : String, // login token obtain upon logging in
     "med" :                // medication object
         {
-            "id"                  : String,  // medication id
+            "med_id"              : String,  // medication id
             "user_id"             : String,  // user id
             "name"                : String,  // name of medication
             "dosage"              : Integer, // 
@@ -161,6 +159,23 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Response
 ```json
 {
-    
+    "msg" : String // success message
+}
+```
+
+## POST /medication/deleteMedication
+### Request
+```json
+{
+    "loginToken" : String, // login token obtain upon logging in
+    "user_id"    : String, // user id
+    "med_id"     : String  // medication id
+}
+```
+
+### Response
+```json
+{
+    "msg" : String // success message
 }
 ```
