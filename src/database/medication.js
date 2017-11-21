@@ -188,6 +188,14 @@ module.exports = function(db, userDB) {
                 }               
                 callback();
             }
-        }
+        },
+
+        getMedication(){
+
+        },
+
+        
+
+
     };
 }
