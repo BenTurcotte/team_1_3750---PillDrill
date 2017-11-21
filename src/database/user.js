@@ -200,6 +200,39 @@ module.exports = function(db) {
                 callback()
         
             })            
+        },
+
+        /**
+        * Given an id, returns a JSON object containing the required user information:
+        * firstName, lastName, email, phoneNumber, and accountType
+        * Last Updated: NOv 20th/ 2017
+        * Author: Tamara
+        */
+        getClientInfo(id){
+            //Get user information from Users table in DB (using given id)
+            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id`, {
+                $id: id,
+                $loginToken: loginToken
+            }, (err, row) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                if (!row) {                    
+                    callback(new Error("Couldn't get row with id"));
+                    return;
+                }
+
+                //Return a JSON object with 
+                return clientInfo = {
+                    "firstName": row.firstName,
+                    "lastName": row.lastName,
+                    "email": row.email,
+                    "phoneNumber": row.phoneNumber,
+                    "accountType": row.accountType
+                }
+            })
         }
     };
 };
