@@ -167,7 +167,6 @@ module.exports = function(db) {
          * The callback is (err). The loginToken is assumed to be good if err is undefined
          */
         checkLogin(email, loginToken, callback) {
-
         }
     };
 };
