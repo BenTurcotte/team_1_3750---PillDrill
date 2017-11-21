@@ -79,8 +79,8 @@ module.exports = function(db, userDB) {
          * link: https://docs.google.com/document/d/19EfGXJbhmD3z-u2Ud4jsdQaSt6Fuxf-8L5xDz8mQ5cc/edit?usp=sharing
          */
 
-        addMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
-            DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
+        addMedication(medId,medName,medDosage,medDosageUnit,uID,startDate,endDate,times,
+            DaysOfWeek,Note,Notif,Notif_before,Hits,Misses){
                 
             db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -124,7 +124,6 @@ module.exports = function(db, userDB) {
             }
         },
 
-
         /*
         * This will update the medication table
          * 
@@ -152,10 +151,10 @@ module.exports = function(db, userDB) {
 
             db.run(`UPDATE ${MEDICATION_TABLE_NAME} 
             SET
-            user_id TEXT UNIQUE = $medName,
-            name TEXT NOT NULL = $medDosage,
-            dosage INTEGER = $medDosageUnit,
-            dosage_unit TEXT NOT NULL = $uID,
+            user_id TEXT UNIQUE = $uID,
+            name TEXT NOT NULL = $medName,
+            dosage INTEGER = $medDosage,
+            dosage_unit TEXT NOT NULL = $medDosageUnit,
             start_date TEXT NOT NULL = $startDate,,
             end_date TEXT NOT NULL =  $endDate,
             times TEXT NOT NULL = $times,
