@@ -42,9 +42,23 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "email"       : String,  // their email to use to login
-    "password"    : String,  // their password to use to login
-    "accountType" : String   // the type of account to create
+    "loginToken"  : String,
+    "new_user"    : {
+        "user_id"           : Number,
+        "email"             : String,
+        "password"          : String,
+        "loginToken"        : String,
+        "loginTokenExpires" : String,
+        "accountType"       : String
+    }
+    "creator"     : {
+        "user_id"           : Number,
+        "email"             : String,
+        "password"          : String,
+        "loginToken"        : String,
+        "loginTokenExpires" : String,
+        "accountType"       : String
+    }
 }
 ```
 
@@ -72,7 +86,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     "error"             : String,  // error string or null>
     "user_id"           : Number,  // user id
     "loginToken"        : String,  // the token that can be used to verify correct login
-    "loginTokenExpires" : String,  // when then loginToken will expire
+    "loginTokenExpires" : String,  // format: YYYYMMDDHHmm // when then loginToken will expire
     "accountType"       : String   // the type of the account that just logged in
 }
 ```
