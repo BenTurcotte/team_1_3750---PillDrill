@@ -52,12 +52,12 @@ module.exports = function(db, userDB) {
          * This will delete the medication
          * by searching medication ID
          */
-        deleteMedication(medID, uID) {
-            db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where id = $medID,
-            user_id = $uID 
+        deleteMedication(med_id, user_id) {
+            db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where id = $med_id,
+            user_id = $user_id 
             )`,{
-                $uID: uID,
-                $medId: medID
+                $user_id: user_id,
+                $med_id: med_id
             },(dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
@@ -87,42 +87,25 @@ module.exports = function(db, userDB) {
          * 
          * link: https://docs.google.com/document/d/19EfGXJbhmD3z-u2Ud4jsdQaSt6Fuxf-8L5xDz8mQ5cc/edit?usp=sharing
          */
-
-        addMedication(medId,medName,medDosage,medDosageUnit,uID,startDate,endDate,times,
-            DaysOfWeek,Note,Notif,Notif_before,Hits,Misses){
-                
-            db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT UNIQUE,
-            name TEXT NOT NULL,
-            dosage INTEGER,
-            dosage_unit TEXT NOT NULL,
-            start_date TEXT NOT NULL,
-            end_date TEXT NOT NULL,
-            times TEXT NOT NULL,
-            days_of_week TEXT NOT NULL,
-            notes TEXT,
-            notification INTEGER,
-            notification_before INTEGER,
-            hits INTEGER,
-            misses INTEGER)
-
-            VALUES ($medId, $medName, $medDosage, $medDosageUnit, $uID, $startDate, $endDate, $times,
-            $DaysOfWeek, $Note, $Notif, $Notif_before, $Hits, $Misses`, {
-                $medId: medId,
-                $medName: medName,
-                $medDosage: medDosage,
-                $medDosageUnit: medDosageUnit, 
-                $uID: uID, 
-                $startDate: startDate, 
-                $endDate: endDate, 
-                $times: times,
-                $DaysOfWeek: DaysOfWeek, 
-                $Note: Note, 
-                $Notif: Notif, 
-                $Notif_before: Notif_before, 
-                $Hits: Hits, 
-                $Misses: Misses
+        addMedication(med, callback){        
+            db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (id, user_id, name, dosage, dosage_unit, start_date, end_date, 
+            times, days_of_week, notes, notification, notification_before, hits, misses)
+            VALUES ($med_id, $user_id, $name, $dosage, $dosage_unit, $start_date, $end_date, $times, $days_of_week, 
+            $notes, $notification, $notification_before, $hits, $misses`, {
+                $med_id: med.med_id,
+                $user_id: med.user_id, 
+                $name: med.name, 
+                $dosage: med.dosage, 
+                $dosage_unit: med.dosage_unit, 
+                $start_date: med.start_date, 
+                $end_date: med.end_date, 
+                $times: med.times, 
+                $days_of_week: med.days_of_week, 
+                $notes: med.notes, 
+                $notification: med.notification, 
+                $notification_before: med.notification_before, 
+                $hits: med.hits, 
+                $misses: med.misses
             }, (dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
