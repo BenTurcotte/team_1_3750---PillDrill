@@ -7,10 +7,29 @@ const utils = require("../utils");
 module.exports = function(router) {
 
     /*
-    req has auth token and UID
+    req has loginToken and user_id
     */
     router.post("/getMedications", function(req, res) {
         
+        var params = utils.checkParameters(req, "loginToken", "user_id");
+        
+        db.user.checkLogin(params.user_id, params.loginToken, (err, stuff) => {
+            
+            if (err) {
+                res.status(400).json(utils.createErrorObject("Session expired."));
+                return;
+            }
+            
+            db.med.getMedications(params.user_id, (err, allMeds) => {
+                
+                if (err) {
+                    res.status(400).json(utils.createErrorObject("Session expired."));
+                    return;
+                }
+
+                res.status(200).json(allMeds);
+            });
+        });
     });
 
     /*
@@ -45,7 +64,7 @@ module.exports = function(router) {
                     med.times.split(",").sort().foreach(function(time) {
                         medsByTime.push(
                             {
-                            id                  : med.id,
+                            med_id              : med.med_id,
                             user_id             : med.user_id,
                             name                : med.name,
                             dosage              : med.dosage,

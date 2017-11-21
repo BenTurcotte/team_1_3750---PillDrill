@@ -31,7 +31,7 @@ can you expect to see any other data in the response body.
 A colon after a parameter is telling you the expected type of that parameter.
 
 If a GET request has parameters, the definition will look like /thingWithParameter/{param1 : Int},
-where you replace param1 with an integer or whichever type is needed.
+where you replace param1 with an Number or whichever type is needed.
 Calling that endpoint might look like https://131.104.180.41:8000/thingWithParameter/22.
 ```
 
@@ -42,47 +42,89 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "email"       : String, // their email to use to login
-    "password"    : String, // their password to use to login
-    "accountType" : String  // the type of account to create
+    "email"       : String,  // their email to use to login
+    "password"    : String,  // their password to use to login
+    "accountType" : String   // the type of account to create
 }
 ```
 
 ### Response
 ```javascript
 {
-    "error" : String // error string or null
+    "error" : String  // error string or null
 }
 ```
+
 
 ---
 ## POST /users/login
 ### Request
 ```javascript
 {
-    "email"    : String, // email to attempt login
-    "password" : String, // password to attempt login
+    "email"    : String,  // email to attempt login
+    "password" : String   // password to attempt login
 }
 ```
 
 ### Response
 ```javascript
 {
-    "error"             : String, // error string or null>
-    "user_id"           : Number, // user id
-    "loginToken"        : String, // the token that can be used to verify correct login
-    "loginTokenExpires" : String, // when then loginToken will expire
-    "accountType"       : String  // the type of the account that just logged in
+    "error"             : String,  // error string or null>
+    "user_id"           : Number,  // user id
+    "loginToken"        : String,  // the token that can be used to verify correct login
+    "loginTokenExpires" : String,  // when then loginToken will expire
+    "accountType"       : String   // the type of the account that just logged in
 }
 ```
+
+
+---
+## POST /medication/getMedications
+### Request
+```javascript
+{
+    "user_id"    : String,  // user's id
+    "loginToken" : String   // login token retrieved during login
+}
+```
+
+### Response
+```javascript
+[
+    {
+        med_id              : String,  // medication id
+        user_id             : String,  // user id
+        name                : String,  // name of medication
+        dosage              : Number,  // 
+        dosage_unit         : String,  // 
+        start_date          : String,  // format: YYYYMMDD
+        end_date            : String,  // format: YYYYMMDD
+        time                : String,  // format: HHmm
+        days_of_week        : String,  // 
+        notes               : String,  // 
+        notification        : Number,  // on\off
+        notification_before : Number,  //
+        hits                : Number,  // count of times user HAS taken this med
+        misses              : Number   // count of times user HAS NOT taken this med
+    },
+    {
+        // next medication
+    },
+    {
+        // another medication
+    }
+]
+
+```
+
 
 ---
 ## POST /medication/getSchedule
 ### Request
 ```javascript
 {
-    "user_id"    : String, // user's id
-    "loginToken" : String  // login token retrieved during login
+    "user_id"    : String,  // user's id
+    "loginToken" : String   // login token retrieved during login
 }
 ```
 
@@ -96,14 +138,14 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     // Sunday
     [
         {
-            "id"           : String,  // medication id
+            "med_id"       : String,  // medication id
             "user_id"      : String,  // user id
             "name"         : String,  // 
-            "dosage"       : Integer, // 
+            "dosage"       : Number,  // 
             "dosage_unit"  : String,  // 
             "time"         : String,  // 24 hour time, format --> HHmm
             "notes"        : String,  // 
-            "notification" : Integer  // integer used as on/off for notifications
+            "notification" : Number   // Number used as on/off for notifications
         },
         {
             // next medication
@@ -135,6 +177,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ]
 ```
 
+
 ---
 ## POST /medication/updateMedication
 ### Request
@@ -146,17 +189,17 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
             "med_id"              : String,  // medication id
             "user_id"             : String,  // user id
             "name"                : String,  // name of medication
-            "dosage"              : Integer, // 
+            "dosage"              : Number,  // 
             "dosage_unit"         : String,  // 
             "start_date"          : String,  // format: YYYYMMDD
             "end_date"            : String,  // format: YYYYMMDD
             "times"               : String,  // comma separated, format: HHmm
             "days_of_week"        : String,  // comma separated, each item b'n commas is either 1 or 0
             "notes"               : String,  // 
-            "notification"        : Integer, // on/off 
-            "notification_before" : Integer, // 
-            "hits"                : Integer, // 
-            "misses"              : Integer  //
+            "notification"        : Number,  // on/off 
+            "notification_before" : Number,  // 
+            "hits"                : Number,  // 
+            "misses"              : Number   //
         }
 }
 ```
@@ -164,24 +207,25 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Response
 ```javascript
 {
-    "msg" : String // success message
+    "msg" : String  // success message
 }
 ```
+
 
 ---
 ## POST /medication/deleteMedication
 ### Request
 ```javascript
 {
-    "loginToken" : String, // login token obtain upon logging in
-    "user_id"    : String, // user id
-    "med_id"     : String  // medication id
+    "loginToken" : String,  // login token obtain upon logging in
+    "user_id"    : String,  // user id
+    "med_id"     : String   // medication id
 }
 ```
 
 ### Response
 ```javascript
 {
-    "msg" : String // success message
+    "msg" : String  // success message
 }
 ```
