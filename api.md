@@ -97,7 +97,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
             "name"         : String,  // 
             "dosage"       : Integer, // 
             "dosage_unit"  : String,  // 
-            "time"         : String,  // 24 hour time, format --> HHMM
+            "time"         : String,  // 24 hour time, format --> HHmm
             "notes"        : String,  // 
             "notification" : Integer  // integer used as on/off for notifications
         },
@@ -129,4 +129,38 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
         // ...
     ]
 ]
+```
+
+## POST /medication/updateMedication
+### Request
+```json
+{
+    "id"         : String, // medication id, create new medication if null
+    "user_id"    : String, // user id
+    "loginToken" : String, // login token obtain upon logging in
+    "med" :                // medication object
+        {
+            "id"                  : String,  // medication id
+            "user_id"             : String,  // user id
+            "name"                : String,  // name of medication
+            "dosage"              : Integer, // 
+            "dosage_unit"         : String,  // 
+            "start_date"          : String,  // format: YYYYMMDD
+            "end_date"            : String,  // format: YYYYMMDD
+            "times"               : String,  // comma separated, format: HHmm
+            "days_of_week"        : String,  // comma separated, each item b'n commas is either 1 or 0
+            "notes"               : String,  // 
+            "notification"        : Integer, // on/off 
+            "notification_before" : Integer, // 
+            "hits"                : Integer, // 
+            "misses"              : Integer  //
+        }
+}
+```
+
+### Response
+```json
+{
+    
+}
 ```

@@ -95,7 +95,23 @@ module.exports = function(router) {
     if medID is not provided, a new medication should be added
     */
     router.post("/updateMedication", function(req, res) {
+        
+        var params = utils.checkParameters(req, "loginToken", "id", "user_id", "med");
+        
+        db.user.checkLogin(params.id, params.loginToken, (err, stuff) => {
+            
+            if (err) {
+                res.status(400).json(utils.createErrorObject("Session expired."));
+                return;
+            }
 
+            if (params.id != null) {
+                db.med.updateMedication()
+            }
+            else {
+
+            }
+        });
     });
     
     /*
