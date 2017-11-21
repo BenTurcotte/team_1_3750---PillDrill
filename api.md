@@ -93,7 +93,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     "start_date"          : String,  // YYYYMMDD
     "end_date"            : String,  // YYYYMMDD
     "time"                : String,  // HHMM 24 hour
-    "days_of_week"        : String,  // comma separated list of 7 bits (one bit per element)
+    "day"                 : Integer  // offset from current date (0 is today, 1 is tomorrow, etc.)
     "notes"               : String,  // 
     "notification"        : Integer, // 0 or 1 (on or off)
     "notification_before" : Integer, // # of mins before 'time' that a notification is to be sent
