@@ -162,6 +162,7 @@ module.exports = function(db) {
                     } else {
                         callback(new Error("Passwords don't match"));
                     }
+                    
                 });
             });
         },
@@ -194,7 +195,9 @@ module.exports = function(db) {
                 if (currDate > row.loginTokenExpires){
                     callback(new Error("Login session has expired"));
                     return;
-                }            
+                }       
+                
+                callback()
         
             })            
         }

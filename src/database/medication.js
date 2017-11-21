@@ -54,8 +54,8 @@ module.exports = function(db, userDB) {
             )`);
         },
 
-        addMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, Times,
-            DaysOfWeek, Note, Notif, Notif_before, Hit, Miss ){
+        addMedication(medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, times,
+            DaysOfWeek, Note, Notif, Notif_before, Hits, Misses){
                 
             db.run(`INSERT INTO ${MEDICATION_TABLE_NAME} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,9 +73,37 @@ module.exports = function(db, userDB) {
             hits INTEGER,
             misses INTEGER)
 
-            VALUES (medId, medName, medDosage, medDosageUnit, uID, startDate, endDate, Times,
-            DaysOfWeek, Note, Notif, Notif_before, Hit, Miss );
-            `);
+            VALUES ($medId, $medName, $medDosage, $medDosageUnit, $uID, $startDate, $endDate, $times,
+            $DaysOfWeek, $Note, $Notif, $Notif_before, $Hits, $Misses`), {
+                $medId: medId,
+                $medName: medName,
+                $medDosage: medDosage,
+                $medDosageUnit: medDosageUnit, 
+                $uID: uID, 
+                $startDate: startDate, 
+                $endDate: endDate, 
+                $times: times,
+                $DaysOfWeek: DaysOfWeek, 
+                $Note: Note, 
+                $Notif: Notif, 
+                $Notif_before: Notif_before, 
+                $Hits: Hits, 
+                $Misses: Misses
+            }, (dbErr) => {
+                if (dbErr) {
+                    callback(dbErr);
+                    return;
+                }
+                
+                callback();
+            }
+        },
+
+
+        /*
+        */
+        updateMedication(){
+
         }
     };
 }
