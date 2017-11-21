@@ -55,7 +55,7 @@ module.exports = function(db, userDB) {
         deleteMedication(medID, uID) {
             db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where $medId = id,
             $uID = user_id
-            )`),{
+            )`,{
                 $uID = uID,
                 $medId = medID
             },(dbErr) => {
@@ -64,7 +64,7 @@ module.exports = function(db, userDB) {
                     return;
                 }     
                 callback();
-            }
+            })
         },
 
         /**
@@ -108,7 +108,7 @@ module.exports = function(db, userDB) {
             misses INTEGER)
 
             VALUES ($medId, $medName, $medDosage, $medDosageUnit, $uID, $startDate, $endDate, $times,
-            $DaysOfWeek, $Note, $Notif, $Notif_before, $Hits, $Misses`), {
+            $DaysOfWeek, $Note, $Notif, $Notif_before, $Hits, $Misses`, {
                 $medId: medId,
                 $medName: medName,
                 $medDosage: medDosage,
@@ -127,10 +127,9 @@ module.exports = function(db, userDB) {
                 if (dbErr) {
                     callback(dbErr);
                     return;
-                }
-                
+                }               
                 callback();
-            }
+            })
         },
 
         /*
@@ -149,6 +148,7 @@ module.exports = function(db, userDB) {
          * - notification
          * - notification_before
          * - hits
+         * - misses
         */
         /**
          * searching by medication id and update the meduacation table
@@ -174,7 +174,7 @@ module.exports = function(db, userDB) {
             hits INTEGER =  $Hits,
             misses INTEGER =  $Misses),
 
-            WHERE medId = id;`),
+            WHERE $medId = id;`,
             {
                 $medId: medId,
                 $medName: medName,
@@ -196,7 +196,56 @@ module.exports = function(db, userDB) {
                     return;
                 }               
                 callback();
-            }
+            })
+        },
+/*
+        /* This will get information from  the medication table
+         * searching by medication id and user id
+         * Columns (as specified in the google doc):
+         * - name
+         * - dosage_amount
+         * - dosage_unit
+         * - start_date
+         * - end_date
+         * - times
+         * - days_of_week : each day stores a string with comma-separated times
+         * - notes
+         * - notification
+         * - notification_before
+         * - hits
+         * - misses
+        */
+        getMedications(medId,uID,callback){
+            db.get(`SELECT * FROM ${USER_TABLE_NAME} 
+                    WHERE $medId = id,  $uID = user_id`,{
+                $medId: medId,
+                $uID: uID,
+            },(err, row) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                if(!row){
+                    callback(err);
+                    return;
+                }
+
+                callback({
+                    $medName: medName,
+                    $medDosage: medDosage,
+                    $medDosageUnit: medDosageUnit, 
+                    $startDate: startDate, 
+                    $endDate: endDate, 
+                    $times: times,
+                    $DaysOfWeek: DaysOfWeek, 
+                    $Note: Note, 
+                    $Notif: Notif, 
+                    $Notif_before: Notif_before,
+                    $Hits: Hits, 
+                    $Misses: Misses 
+                });
+            })
         }
     };
 }
