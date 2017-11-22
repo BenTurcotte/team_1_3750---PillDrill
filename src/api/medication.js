@@ -60,8 +60,8 @@ module.exports = function(router) {
                 var day           = [];
                 const today = new Date();
                 
-                allMeds.foreach(function(med) {
-                    med.times.split(",").sort().foreach(function(time) {
+                allMeds.forEach(function(med) {
+                    med.times.split(",").sort().forEach(function(time) {
                         medsByTime.push(
                             {
                             med_id              : med.med_id,
@@ -71,7 +71,7 @@ module.exports = function(router) {
                             dosage_unit         : med.dosage_unit,
                             start_date          : med.start_date,
                             end_date            : med.end_date,
-                            time                : timeArr[j],
+                            time                : time,
                             days_of_week        : med.days_of_week,
                             notes               : med.notes,
                             notification        : med.notification,
@@ -83,7 +83,7 @@ module.exports = function(router) {
                     });
                 });
 
-                medsByTime.sort().foreach(function(med) {
+                medsByTime.sort().forEach(function(med) {
                     var days = med.days_of_week.split(",");
                     var i = 0;
                     for (i = 0; i < days.length; i++) {
@@ -126,21 +126,21 @@ module.exports = function(router) {
 
             // should it be params.med.med_id ?
             if (params.id != null) {
-                db.med.updateMedication(med, (err, success) => {
+                db.med.updateMedication(params.med, (err, success) => {
                     if (err) {
                         res.status(400).json(utils.createErrorObject("Unable to update medication."));
                         return;
                     }
-                    res.status(200).json(utils.createResponseObject("successfully updated medication!"));
+                    res.status(200).json(utils.createErrorObject());
                 });
             }
             else {
-                db.med.addMedication(med, (err, success) => {
+                db.med.addMedication(params.med, (err, success) => {
                     if (err) {
                         res.status(400).json(utils.createErrorObject("Unable to add medication."));
                         return;
                     }
-                    res.status(200).json(utils.createResponseObject("successfully added medication!"));
+                    res.status(200).json(utils.createErrorObject());
                 });
             }
         });
@@ -160,11 +160,12 @@ module.exports = function(router) {
                 return;
             }
 
-            db.med.deleteMedication(med_id, user_id, (err) => {
+            db.med.deleteMedication(params.med_id, params.user_id, (err) => {
                 if (err) {
                     res.status(400).json(utils.createErrorObject("Unable to delete medication."));
                     return;
                 }
+                res.status(200).json(utils.createErrorObject());
             });
         });
     });
