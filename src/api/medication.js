@@ -60,8 +60,8 @@ module.exports = function(router) {
                 var day           = [];
                 const today = new Date();
                 
-                allMeds.foreach(function(med) {
-                    med.times.split(",").sort().foreach(function(time) {
+                allMeds.forEach(function(med) {
+                    med.times.split(",").sort().forEach(function(time) {
                         medsByTime.push(
                             {
                             med_id              : med.med_id,
@@ -83,7 +83,7 @@ module.exports = function(router) {
                     });
                 });
 
-                medsByTime.sort().foreach(function(med) {
+                medsByTime.sort().forEach(function(med) {
                     var days = med.days_of_week.split(",");
                     var i = 0;
                     for (i = 0; i < days.length; i++) {
