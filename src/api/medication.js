@@ -131,7 +131,7 @@ module.exports = function(router) {
                         res.status(400).json(utils.createErrorObject("Unable to update medication."));
                         return;
                     }
-                    res.status(200).json(utils.createResponseObject("successfully updated medication!"));
+                    res.status(200).json(utils.createErrorObject());
                 });
             }
             else {
@@ -140,7 +140,7 @@ module.exports = function(router) {
                         res.status(400).json(utils.createErrorObject("Unable to add medication."));
                         return;
                     }
-                    res.status(200).json(utils.createResponseObject("successfully added medication!"));
+                    res.status(200).json(utils.createErrorObject());
                 });
             }
         });
@@ -165,6 +165,7 @@ module.exports = function(router) {
                     res.status(400).json(utils.createErrorObject("Unable to delete medication."));
                     return;
                 }
+                res.status(200).json(utils.createErrorObject());
             });
         });
     });
