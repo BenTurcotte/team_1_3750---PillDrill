@@ -6,6 +6,29 @@ const utils = require("../utils");
 
 module.exports = function(router) {
 
+    router.post("/getMedication", function(req, res) {
+        
+        var params = utils.checkParameters(req, "login_token", "user_id", "med_id");
+        
+        db.user.checkLogin(params.user_id, params.login_token, (err, stuff) => {
+            
+            if (err) {
+                res.status(400).json(utils.createErrorObject("Session expired."));
+                return;
+            }
+            
+            db.med.getMedication(params.med_id, (err, med) => {
+                
+                if (err) {
+                    res.status(400).json(utils.createErrorObject("Couldn't get medication."));
+                    return;
+                }
+
+                res.status(200).json(utils.createResponseObject(med));
+            });
+        });
+    });
+
     /*
     req has login_token and user_id
     */
