@@ -203,7 +203,7 @@ module.exports = function(db) {
          */
         checkLogin(id, login_token, callback) {            
             //Check if given loginTokin matched the loginTokin in the databse (using id)
-            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id, login_token = $login_token`, {
+            db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $id and login_token = $login_token`, {
                 $id: id,
                 $login_token: login_token
             }, (err, row) => {
