@@ -209,12 +209,14 @@ module.exports = function(db) {
             }, (err, row) => {
                 if (err) {
                     callback(err);
+                    console.error("checkLogin: Bad query", err);
                     return;
                 }
 
                 if (!row) {
                     //callback(new Error("Couldn't get a row with given login_token and id"));
                     callback(new Error("Login session has expired"));
+                    console.error("checkLogin: no row exists from sql", row);
                     return;
                 }
 
@@ -224,6 +226,7 @@ module.exports = function(db) {
                 exp_date = new Date(row.login_token_expires)
                 if (currDate > exp_date){
                     callback(new Error("Login session has expired"));
+                    console.error("checkLogin: session expired");
                     return;
                 } 
                  */
