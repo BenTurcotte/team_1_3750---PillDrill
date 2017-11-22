@@ -40,7 +40,7 @@ if (!init) {
         phone_num          : "123-456-789",
         account_type       : "Admin"
     }, () => {
-        
+        console.log("uh oh")
     });
 }
 
