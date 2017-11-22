@@ -37,6 +37,11 @@ app.options("*", function(req, res) {
     res.sendStatus(200);
 });
 
+app.use(function(req, res, next) {
+    console.log(req.method, "on", req.path);
+    next();
+});
+
 //Setup all of our routes
 app.use("/users", userRouter);
 

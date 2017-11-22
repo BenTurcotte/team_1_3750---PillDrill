@@ -60,6 +60,7 @@ module.exports = function(db, userDB) {
             },(dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
+                    console.error("deleteMedication: delete error", dbErr);
                     return;
                 }     
                 callback();
@@ -108,6 +109,7 @@ module.exports = function(db, userDB) {
             }, (dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
+                    console.error("addMedication: insert error", dbErr);
                     return;
                 }               
                 callback();
@@ -158,6 +160,7 @@ module.exports = function(db, userDB) {
             },(dbErr) => {
                 if (dbErr) {
                     callback(dbErr);
+                    console.error("updateMedication: update error", dbErr);
                     return;
                 }               
                 callback();
@@ -189,11 +192,13 @@ module.exports = function(db, userDB) {
             },(err, rows) => {
                 if (err) {
                     callback(err);
+                    console.error("getMedications: select error", err);
                     return;
                 }
 
                 if(!rows){
                     callback(new Error("User has no medicatons"));
+                    console.error("getMedications: no rows from user", user_id);
                     return;
                 }
 
@@ -220,7 +225,7 @@ module.exports = function(db, userDB) {
                     
                 });   
                 callback(undefined, medicationArray);             
-            })
+            });
         }
     };
 }
