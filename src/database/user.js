@@ -306,6 +306,41 @@ module.exports = function(db) {
                     });
                 });
             });
+        },
+
+        /**
+         * Returns a JSON array containing information about all users
+         * Last Updated: Nov 22/2017
+         * Author: Tamara
+         */
+        getTable(callback) {
+            db.all(`SELECT * FROM ${USER_TABLE_NAME}`, (err, rows) => {
+                if(err)
+                {
+                    callback(err)
+                    return;
+                }
+
+                var userArray = [];
+                rows.forEach(row => {
+                    userArray.push(
+                    {
+                        id: row.id ,
+                        first_name: row.first_name,
+                        last_name: row.last_name,
+                        email: row.email ,
+                        phone_number: row.phone_number,
+                        passwordHash: row.passwordHash ,
+                        passwordSalt: row.passwordSalt ,
+                        account_type: row.account_type ,
+                        login_token: row.login_token ,
+                        login_token_expires: row.login_token_expires ,
+                        lastLoginDate: row.lastLoginDate
+                    })
+                });
+                callback(undefined, userArray);
+            });
         }
+        //end of module export
     };
 };
