@@ -12,7 +12,11 @@ module.exports = {
       env : {
         NODE_ENV: 'production'
       },
-      args: "131.104.180.41 8000"
+      args: "131.104.180.41 8000",
+      out_file: "out.log",
+      error_file: "err.log",
+      merge_logs: true,
+      log_date_format : "YYYY-MM-DD HH:mm:ss"
     },
   ]
 };
