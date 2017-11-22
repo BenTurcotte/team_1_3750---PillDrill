@@ -59,13 +59,13 @@ module.exports = function() {
                     let thisTest = theFailedTest ? 0 : 1;
 
                     //Finally return normally once we reach the end of a dependency chain
-                    if (dependencies.length == 0) {
+                    if (this.dependencies.length == 0) {
                         return thisTest;
                     }
 
                     //Go through all of the tests and count their dependencies too
                     //Make sure to count the current test too (the initial value to accumulate)
-                    return dependencies.reduce(function(acc, test) {
+                    return this.dependencies.reduce(function(acc, test) {
                         return acc + test.countMissedTests(false);
                     }, thisTest);
                 },
