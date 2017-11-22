@@ -99,4 +99,33 @@ module.exports = function(router) {
 
         });
     });
+
+    router.post("/getInfo", function(req, res) {
+        
+        var params = utils.checkParameters(req, "login_token", "user_id");
+        
+        if (!params) {
+            res.status(400).json(utils.createErrorObject("Invalid params for getInfo"));
+            return;
+        }
+
+        db.user.checkLogin(params.user_id, params.login_token, function(err) {
+
+            if (err) {
+                res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
+                return;
+            }
+
+            db.user.getClientInfo(params.user_id, function(err, info) {
+                
+                if (err) {
+                    res.status(400).json(utils.createErrorObject("The email or password were incorrect"));
+                    return;
+                }
+
+                res.status(200).json(utils.createResponseObject(info));
+            });
+        });
+    });
+
 };
