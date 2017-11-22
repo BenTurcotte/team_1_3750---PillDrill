@@ -42,7 +42,8 @@ module.exports = function(router) {
             //res.status(400).json(utils.createErrorObject("Could not find loginToken, new_user object, and/or creator object"));
             
             //Tamara
-            res.status(400).json(utils.createErrorObject("Could not find login_token, creator_id, and/or new_user object"));
+            res.status(400).json(utils.createErrorObject(err.message));
+            // res.status(400).json(utils.createErrorObject("Could not find login_token, creator_id, and/or new_user object"));
             return;
         }
 
@@ -62,7 +63,8 @@ module.exports = function(router) {
             //Tamara
             db.user.getAccountType(params.creator_id, (err, account_type) => {
                 if(err) {                
-                    res.status(400).json(utils.createErrorObject("Couldn't retrieve account type for creator"));
+                    res.status(400).json(utils.createErrorObject(err.message));
+                    // res.status(400).json(utils.createErrorObject("Couldn't retrieve account type for creator"));
                     return;
                 }
 
@@ -70,14 +72,16 @@ module.exports = function(router) {
                     db.user.createNewUser(params.new_user, function(err) {
                         
                         if (err) {
-                            res.status(500).json(utils.createErrorObject("Couldn't create the user"));
+                            res.status(400).json(utils.createErrorObject(err.message));
+                            // res.status(500).json(utils.createErrorObject("Couldn't create the user"));
                             return;
                         }
                         res.status(200).json(utils.createErrorObject());
                     });
                 }
                 else {
-                    res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
+                    res.status(400).json(utils.createErrorObject(err.message));
+                    // res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
                 }
             });
 
