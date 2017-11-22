@@ -126,7 +126,7 @@ module.exports = function(router) {
 
             // should it be params.med.med_id ?
             if (params.id != null) {
-                db.med.updateMedication(med, (err, success) => {
+                db.med.updateMedication(params.med, (err, success) => {
                     if (err) {
                         res.status(400).json(utils.createErrorObject("Unable to update medication."));
                         return;
@@ -135,7 +135,7 @@ module.exports = function(router) {
                 });
             }
             else {
-                db.med.addMedication(med, (err, success) => {
+                db.med.addMedication(params.med, (err, success) => {
                     if (err) {
                         res.status(400).json(utils.createErrorObject("Unable to add medication."));
                         return;
@@ -160,7 +160,7 @@ module.exports = function(router) {
                 return;
             }
 
-            db.med.deleteMedication(med_id, user_id, (err) => {
+            db.med.deleteMedication(params.med_id, params.user_id, (err) => {
                 if (err) {
                     res.status(400).json(utils.createErrorObject("Unable to delete medication."));
                     return;
