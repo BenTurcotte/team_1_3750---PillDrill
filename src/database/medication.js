@@ -33,7 +33,7 @@ module.exports = function(db, userDB) {
         createTable() {
             db.run(`CREATE TABLE IF NOT EXISTS ${MEDICATION_TABLE_NAME} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id TEXT UNIQUE,
+                user_id INTEGER,
                 name TEXT NOT NULL,
                 dosage INTEGER,
                 dosage_unit TEXT NOT NULL,
