@@ -73,9 +73,10 @@ module.exports = function(router) {
                             res.status(500).json(utils.createErrorObject("Couldn't create the user"));
                             return;
                         }
+                        res.status(200).json(utils.createErrorObject());
                     });
                 }
-                else{
+                else {
                     res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
                 }
             });
