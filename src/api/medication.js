@@ -97,7 +97,7 @@ module.exports = function(router) {
                     var days = med.days_of_week.split(",");
                     var i = 0;
                     for (i = 0; i < days.length; i++) {
-                        schedule[dayMap[days[i]]] =
+                        schedule[dayMap[days[i]]].push(
                             {
                                 id                  : med.id,
                                 user_id             : med.user_id,
@@ -107,7 +107,8 @@ module.exports = function(router) {
                                 time                : med.time,
                                 notes               : med.notes,
                                 notification        : med.notification
-                            };
+                            }
+                        );
                     }
                 });
 
