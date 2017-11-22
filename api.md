@@ -55,20 +55,13 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```javascript
 {
     "login_token" : String,
+    "creator_id" : Number,
     "new_user" : {
-        "user_id"             : Number,
+        "first_name"	      : String,
+	"last_name"	      : String,
         "email"               : String,
         "password"            : String,
-        "login_token"         : String,
-        "login_token_expires" : String,
-        "account_type"        : String
-    },
-    "creator" : {
-        "user_id"             : Number,
-        "email"               : String,
-        "password"            : String,
-        "login_token"         : String,
-        "login_token_expires" : String,
+	"phone_num"	      : String,
         "account_type"        : String
     }
 }

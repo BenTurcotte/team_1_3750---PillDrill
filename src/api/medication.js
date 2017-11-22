@@ -124,6 +124,7 @@ module.exports = function(router) {
                 return;
             }
 
+            // should it be params.med.med_id ?
             if (params.id != null) {
                 db.med.updateMedication(med, (err, success) => {
                     if (err) {

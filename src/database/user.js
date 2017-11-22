@@ -50,10 +50,10 @@ module.exports = function(db) {
         createTable() {
             db.run(`CREATE TABLE IF NOT EXISTS ${USER_TABLE_NAME} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                firstName TEXT NOT NULL,
-                lastName TEXT NOT NULL,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
                 email TEXT UNIQUE,
-                phoneNumber TEXT,
+                phone_number TEXT,
                 passwordHash TEXT NOT NULL,
                 passwordSalt TEXT NOT NULL,
                 account_type TEXT NOT NULL,
@@ -69,8 +69,9 @@ module.exports = function(db) {
          * The callback is (err) and will be called when the user has been created, or not.
          * err will be truthy if an error exists
          */
-        createNewUser(email, rawPassword, account_type, callback) {
-            hashPassword(rawPassword, (err, hashedPassword, salt) => {
+        
+        createNewUser(new_user, callback){         
+            hashPassword(new_user.password, (err, hashedPassword, salt) => {
                 if (err) {
                     callback(err);
                     return;
@@ -79,20 +80,29 @@ module.exports = function(db) {
                 //Insert the new user into the DB with the mapped data
                 //Callback the callback with maybe an error once it completes
                 db.run(`INSERT INTO ${USER_TABLE_NAME} (
+                    first_name,
+                    last_name,
                     email,
+                    phone_number,
                     passwordHash,
                     passwordSalt,
                     account_type
                 ) VALUES (
+                    $first_name,
+                    $last_name,                    
                     $email,
+                    $phone_number
                     $hashedPassword,
                     $salt,
                     $account_type
                 )`, {
-                    $email: email,
+                    $first_name: new_user.first_name,
+                    $last_name: new_user.last_name,
+                    $email: new_user.email,
+                    $phone_number: new_user.phone_num,
                     $hashedPassword: hashedPassword,
                     $salt: salt,
-                    $account_type: account_type
+                    $account_type: new_user.account_type
                 }, (dbErr) => {
                     if (dbErr) {
                         callback(dbErr);
@@ -102,6 +112,24 @@ module.exports = function(db) {
                     callback();
                 });
             });
+        },
+
+        /**
+         * 
+         * Given aa user ID, returns the account type form the DB
+         */
+        getAccountType(user_id, callback){
+            db.get(`SELECT account_type FROM ${USER_TABLE_NAME} WHERE id = $user_id`, { 
+                $user_id: user_id
+            }, (err, row) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                callback(undefined, row.account_type);
+            }
+        )
         },
 
         /**
@@ -204,7 +232,7 @@ module.exports = function(db) {
 
         /**
         * Given an id, returns a JSON object containing the required user information:
-        * firstName, lastName, email, phoneNumber, and account_type
+        * first_name, last_name, email, phone_number, and account_type
         * Last Updated: NOv 20th/ 2017
         * Author: Tamara
         */
@@ -226,10 +254,10 @@ module.exports = function(db) {
 
                 //Return a JSON object with 
                 callback(undefined,{
-                    firstName: row.firstName,
-                    lastName: row.lastName,
+                    first_name: row.first_name,
+                    last_name: row.last_name,
                     email: row.email,
-                    phoneNumber: row.phoneNumber,
+                    phone_num: row.phone_number,
                     account_type: row.account_type
                 });
             })
@@ -240,14 +268,15 @@ module.exports = function(db) {
          * Last Updated: Nov 20th/2017
          * Author: Tamara
          */
+
         updateClientInfo(client, callback){
-            db.run(`UPDATE ${USER_TABLE_NAME} SET firstName = $firstName, lastName = $lastName, 
-            email = $email, phoneNumber = $phoneNumnber WHERE id = $userID`, {
-                $firstName: client.firstName,
-                $lastName: client.lastName, 
+            db.run(`UPDATE ${USER_TABLE_NAME} SET first_name = $first_name, last_name = $last_name, 
+            email = $email, phone_number = $phone_numnber WHERE id = $user_id`, {
+                $first_name: client.first_name,
+                $last_name: client.last_name, 
                 $email: client.email, 
-                $phoneNumber: client.phoneNumnber,    
-                $userID: client.userID            
+                $phone_number: client.phone_numr,    
+                $user_id: client.user_id            
             }, (err) => {
                 if (err) {
                     callback(err);
@@ -255,14 +284,14 @@ module.exports = function(db) {
                 }
                 
                 //If we didn't get an error while updating, we won't get an error here
-                db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $userID`, {
-                    $userID: client.userID
+                db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $user_id`, {
+                    $user_id: client.user_id
                 }, (row) => {
                     callback(undefined, {
-                        firstName: row.firstName,
-                        lastName: row.lastName,
-                        email: row.email,
-                        phoneNumber: row.phoneNumber,
+                        first_name: row.first_name,
+                        last_name: row.last_name,
+                        phone_num: row.phone_number,
+                        email: row.email,                        
                     });
                 })
             })
