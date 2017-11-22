@@ -226,6 +226,43 @@ module.exports = function(db, userDB) {
                 });   
                 callback(undefined, medicationArray);             
             });
+        },
+
+        /**
+         * Returns a JSON array containing information about all medications
+         * Last Updated: Nov 22/2017
+         * Author: Tamara
+         */
+        getTable(callback) {
+            db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}`, (err, rows) => {
+                if(err)
+                {
+                    callback(err)
+                    return;
+                }
+
+                var medicationArray = [];
+                rows.array.forEach(row => {
+                    medicationArray.push(
+                    {
+                        id: row.id,
+                        user_id: row.user_id,
+                        name: row.name,
+                        dosage: row.dosage,
+                        dosage_unit: row.dosage_unit,
+                        start_date: row.start_date,
+                        end_date: row.end_date,
+                        times: row.times,
+                        days_of_week: row.days_of_week,
+                        notes: row.notes,
+                        notification: row.notification,
+                        notification_before: row.notification_before,
+                        hits: row.hits,
+                        misses: row.misses
+                    })
+                });
+                callback(undefined, medicationArray);
+            });
         }
     };
 }
