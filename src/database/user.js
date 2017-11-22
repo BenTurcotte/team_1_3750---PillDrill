@@ -330,7 +330,7 @@ module.exports = function(db) {
                         last_name: row.last_name,
                         email: row.email ,
                         phone_number: row.phone_number,
-                        passwordHash: row,passwordHash ,
+                        passwordHash: row.passwordHash ,
                         passwordSalt: row.passwordSalt ,
                         account_type: row.account_type ,
                         login_token: row.login_token ,
