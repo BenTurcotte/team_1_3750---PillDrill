@@ -70,16 +70,6 @@ module.exports = function(db) {
          * err will be truthy if an error exists
          */
         
-         /**
-         * "new_user" : {
-            "firstName" : String,
-            "lastName" : String,
-            "phoneNum" : String,
-            "email" : String,
-            "password" : String,
-            "accountType" : String
-        }
-         */
         createNewUser(new_user, callback){         
             hashPassword(new_user.password, (err, hashedPassword, salt) => {
                 if (err) {
@@ -109,7 +99,7 @@ module.exports = function(db) {
                     $firstName: new_user.firstName,
                     $lastName: new_user.lastName,
                     $email: new_user.email,
-                    $phoneNumber: new_user.phoneNumber,
+                    $phoneNumber: new_user.phoneNum,
                     $hashedPassword: hashedPassword,
                     $salt: salt,
                     $account_type: new_user.account_type
@@ -122,6 +112,24 @@ module.exports = function(db) {
                     callback();
                 });
             });
+        },
+
+        /**
+         * 
+         * Given aa user ID, returns the account type form the DB
+         */
+        getAccountType(user_id, callback){
+            db.get(`SELECT account_type FROM ${USER_TABLE_NAME} WHERE id = $user_id`, { 
+                $user_id = user_id
+            }, (err, row) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                callback(undefined, row.account_type);
+            }
+        )
         },
 
         /**
@@ -249,7 +257,7 @@ module.exports = function(db) {
                     firstName: row.firstName,
                     lastName: row.lastName,
                     email: row.email,
-                    phoneNumber: row.phoneNumber,
+                    phoneNum: row.phoneNumber,
                     account_type: row.account_type
                 });
             })
@@ -260,14 +268,15 @@ module.exports = function(db) {
          * Last Updated: Nov 20th/2017
          * Author: Tamara
          */
+
         updateClientInfo(client, callback){
             db.run(`UPDATE ${USER_TABLE_NAME} SET firstName = $firstName, lastName = $lastName, 
-            email = $email, phoneNumber = $phoneNumnber WHERE id = $userID`, {
+            email = $email, phoneNumber = $phoneNumnber WHERE id = $user_id`, {
                 $firstName: client.firstName,
                 $lastName: client.lastName, 
                 $email: client.email, 
-                $phoneNumber: client.phoneNumnber,    
-                $userID: client.userID            
+                $phoneNumber: client.phoneNumr,    
+                $user_id: client.user_id            
             }, (err) => {
                 if (err) {
                     callback(err);
@@ -275,14 +284,14 @@ module.exports = function(db) {
                 }
                 
                 //If we didn't get an error while updating, we won't get an error here
-                db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $userID`, {
-                    $userID: client.userID
+                db.get(`SELECT * FROM ${USER_TABLE_NAME} WHERE id = $user_id`, {
+                    $user_id: client.user_id
                 }, (row) => {
                     callback(undefined, {
                         firstName: row.firstName,
                         lastName: row.lastName,
-                        email: row.email,
-                        phoneNumber: row.phoneNumber,
+                        phoneNum: row.phoneNumber,
+                        email: row.email,                        
                     });
                 })
             })

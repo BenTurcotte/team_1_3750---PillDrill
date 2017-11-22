@@ -31,21 +31,58 @@ module.exports = function(router) {
 
     //Tries to create an account
     router.post("/createAccount", function(req, res) {
-        //should accept login_tokin, creator_id, new_user
-        var params = utils.checkParameters(req, "loginToken", "new_user", "creator");
+        //old
+        //var params = utils.checkParameters(req, "loginToken", "new_user", "creator");
+        
+        //Tamara
+        var params = utils.checkParameters(req, "login_token", "creator_id", "new_user");
         
         if (!params) {
-            res.status(400).json(utils.createErrorObject("Could not find loginToken, new_user object, and/or creator object"));
+            //old
+            //res.status(400).json(utils.createErrorObject("Could not find loginToken, new_user object, and/or creator object"));
+            
+            //Tamara
+            res.status(400).json(utils.createErrorObject("Could not find login_token, creator_id, and/or new_user object"));
             return;
         }
-        
-        db.user.checkLogin(params.creator.user_id, params.loginToken, (err) => {
+
+
+
+        //old
+        //db.user.checkLogin(params.creator.user_id, params.loginToken, (err) => {
+
+        //Tamara
+        db.user.checkLogin(params.creator_id, params.login_token, (err) => {
             
             if (err) {
                 res.status(400).json(utils.createErrorObject("Session has expired."));
                 return;
             }
-            else if (creator.account_type == "Admin") {  
+
+            //Tamara
+            db.user.getAccountType(params.creator_id, (err, account_type) => {
+                if(err) {                
+                    res.status(400).json(utils.createErrorObject("Couldn't retrieve account type for creator"));
+                    return;
+                }
+
+                if(account_type == "Admin"){
+                    db.user.createNewUser(params.new_user, function(err) {
+                        
+                        if (err) {
+                            res.status(500).json(utils.createErrorObject("Couldn't create the user"));
+                            return;
+                        }
+                    });
+                }
+                else{
+                    res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
+                }
+            });
+
+            
+            //old
+            /*else if (creator.account_type == "Admin") {  
                 
                 db.user.createNewUser(params.new_user, function(err) {
                 
@@ -57,7 +94,7 @@ module.exports = function(router) {
             }
             else {
                 res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
-            }
+            }*/
 
         });
     });
