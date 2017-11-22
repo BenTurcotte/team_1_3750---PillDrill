@@ -31,6 +31,17 @@ if (!init) {
     //Create any tables we need that don't exist
     userDB.createTable();
     medDB.createTable();
+
+    userDB.createNewUser({
+        first_name         : "CLC",
+        last_name          : "Admin",
+        email              : "iamadmin@clc.ca",
+        password           : "iamadmin",
+        phone_num          : "123-456-789",
+        account_type       : "Admin"
+    }, () => {
+        
+    });
 }
 
 //Export an object full of functions to call on the database

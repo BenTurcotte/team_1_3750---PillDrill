@@ -52,7 +52,7 @@ module.exports = function(db) {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 first_name TEXT NOT NULL,
                 last_name TEXT NOT NULL,
-                email TEXT UNIQUE,
+                email TEXT UNIQUE NOT NULL,
                 phone_number TEXT,
                 passwordHash TEXT NOT NULL,
                 passwordSalt TEXT NOT NULL,
