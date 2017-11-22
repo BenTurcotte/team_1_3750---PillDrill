@@ -314,7 +314,7 @@ module.exports = function(db) {
          * Author: Tamara
          */
         getTable(callback) {
-            db.get(`SELECT * FROM ${USER_TABLE_NAME}`, (err, rows) => {
+            db.all(`SELECT * FROM ${USER_TABLE_NAME}`, (err, rows) => {
                 if(err)
                 {
                     callback(err)
@@ -322,7 +322,7 @@ module.exports = function(db) {
                 }
 
                 var userArray = [];
-                rows.array.forEach(row => {
+                rows.forEach(row => {
                     userArray.push(
                     {
                         id: row.id ,
