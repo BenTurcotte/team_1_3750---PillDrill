@@ -39,8 +39,11 @@ if (!init) {
         password           : "iamadmin",
         phone_num          : "123-456-789",
         account_type       : "Admin"
-    }, () => {
-        console.log("uh oh")
+    }, (err) => {
+        if (err){
+            console.log("uh oh")
+        }
+        
     });
 }
 
