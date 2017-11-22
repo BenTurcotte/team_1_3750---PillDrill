@@ -71,7 +71,7 @@ module.exports = function(router) {
                             dosage_unit         : med.dosage_unit,
                             start_date          : med.start_date,
                             end_date            : med.end_date,
-                            time                : timeArr[j],
+                            time                : time,
                             days_of_week        : med.days_of_week,
                             notes               : med.notes,
                             notification        : med.notification,
