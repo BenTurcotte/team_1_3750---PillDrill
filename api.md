@@ -8,7 +8,7 @@ There were some inconsistencies between api & db variable names being passed bac
 
 ---
 
-# General Info ![alt text](https://oldfashion.it/images/demo/icon/info.png "info")
+# General Info
 This file describes all of the public endpoints that can be accessed for this project's backend.
 These are called APIs, and come in the form of HTTP requests.
 
