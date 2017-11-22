@@ -8,7 +8,7 @@ There were some inconsistencies between api & db variable names being passed bac
 
 ---
 
-# General Info
+# General Info ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Info_Simple_bw.svg/1024px-Info_Simple_bw.svg.png "info")
 This file describes all of the public endpoints that can be accessed for this project's backend.
 These are called APIs, and come in the form of HTTP requests.
 
