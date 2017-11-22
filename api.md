@@ -136,11 +136,44 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 
 ---
+## POST /users/getMedications
+### Request
+```javascript
+{
+    "user_id"     : Number,  // user's id
+    "login_token" : String,  // login token retrieved during login
+    "med_id"      : Number   // id for medication to retrieve
+}
+```
+
+### Response
+```javascript
+{
+    "med_id"              : String,  // medication id
+    "user_id"             : String,  // user id
+    "name"                : String,  // name of medication
+    "dosage"              : Number,  // 
+    "dosage_unit"         : String,  // 
+    "start_date"          : String,  // format: YYYYMMDD
+    "end_date"            : String,  // format: YYYYMMDD
+    "time"                : String,  // format: HHmm
+    "days_of_week"        : String,  // 
+    "notes"               : String,  // 
+    "notification"        : Number,  // on\off
+    "notification_before" : Number,  //
+    "hits"                : Number,  // count of times user HAS taken this med
+    "misses"              : Number   // count of times user HAS NOT taken this med
+}
+
+```
+
+
+---
 ## POST /users/getSchedule
 ### Request
 ```javascript
 {
-    "user_id"    : String,  // user's id
+    "user_id"     : Number,  // user's id
     "login_token" : String   // login token retrieved during login
 }
 ```
@@ -155,8 +188,8 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     // Sunday
     [
         {
-            "med_id"       : String,  // medication id
-            "user_id"      : String,  // user id
+            "med_id"       : Number,  // medication id
+            "user_id"      : Number,  // user id
             "name"         : String,  // 
             "dosage"       : Number,  // 
             "dosage_unit"  : String,  // 
@@ -203,8 +236,8 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     "login_token" : String, // login token obtain upon logging in
     "med" :                // medication object
         {
-            "med_id"              : String,  // medication id
-            "user_id"             : String,  // user id
+            "med_id"              : Number,  // medication id
+            "user_id"             : Number,  // user id
             "name"                : String,  // name of medication
             "dosage"              : Number,  // 
             "dosage_unit"         : String,  // 
@@ -235,8 +268,8 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```javascript
 {
     "login_token" : String,  // login token obtained upon logging in
-    "user_id"     : String,  // user id
-    "med_id"      : String   // medication id
+    "user_id"     : Number,  // user id
+    "med_id"      : Number   // medication id
 }
 ```
 
@@ -248,6 +281,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```
 
 
+---
 ## POST /users/getInfo
 (probably only works with CLCClient)
 ### Request
