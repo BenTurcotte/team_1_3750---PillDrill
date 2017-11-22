@@ -219,12 +219,15 @@ module.exports = function(db) {
                 }
 
                 //Check that login_tokenDate has not passed
-                currDate = new Date()
+                /**
+                 * currDate = new Date()
                 exp_date = new Date(row.login_token_expires)
                 if (currDate > exp_date){
                     callback(new Error("Login session has expired"));
                     return;
-                }       
+                } 
+                 */
+                      
                 
                 callback();
         
