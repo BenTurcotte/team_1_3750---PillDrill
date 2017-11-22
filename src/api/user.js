@@ -27,7 +27,7 @@ router.get("/getUserTable", function(req, res) {
         }
     
         // do stuff with table
-        
+        res.set("Content-Type", "application/json");
         res.status(200).send(JSON.stringify(table, null, 4));
     });
 });
@@ -41,7 +41,7 @@ router.get("/getMedicationsTable", function(req, res) {
         }
     
         // do stuff with table
-        
+        res.set("Content-Type", "application/json");
         res.status(200).send(JSON.stringify(table, null, 4));
     });
 });
