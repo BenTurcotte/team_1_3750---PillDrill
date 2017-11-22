@@ -91,7 +91,7 @@ module.exports = function(db) {
                     $first_name,
                     $last_name,                    
                     $email,
-                    $phone_number
+                    $phone_number,
                     $hashedPassword,
                     $salt,
                     $account_type
@@ -220,7 +220,8 @@ module.exports = function(db) {
 
                 //Check that login_tokenDate has not passed
                 currDate = new Date()
-                if (currDate > row.login_token_expires){
+                exp_date = new Date(row.login_token_expires)
+                if (currDate > exp_date){
                     callback(new Error("Login session has expired"));
                     return;
                 }       
@@ -275,7 +276,7 @@ module.exports = function(db) {
                 $first_name: client.first_name,
                 $last_name: client.last_name, 
                 $email: client.email, 
-                $phone_number: client.phone_numr,    
+                $phone_number: client.phone_num,    
                 $user_id: client.user_id            
             }, (err) => {
                 if (err) {
