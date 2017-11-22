@@ -53,7 +53,7 @@ module.exports = function(db, userDB) {
          * by searching medication ID
          */
         deleteMedication(med_id, user_id, callback) {
-            db.run(`DELETE * FROM ${MEDICATION_TABLE_NAME} where id = $med_id and
+            db.run(`DELETE FROM ${MEDICATION_TABLE_NAME} where id = $med_id and
             user_id = $user_id)`,{
                 $user_id: user_id,
                 $med_id: med_id
