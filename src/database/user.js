@@ -50,10 +50,10 @@ module.exports = function(db) {
         createTable() {
             db.run(`CREATE TABLE IF NOT EXISTS ${USER_TABLE_NAME} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                firstName TEXT NOT NULL,
-                lastName TEXT NOT NULL,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
                 email TEXT UNIQUE,
-                phoneNumber TEXT,
+                phone_number TEXT,
                 passwordHash TEXT NOT NULL,
                 passwordSalt TEXT NOT NULL,
                 account_type TEXT NOT NULL,
@@ -80,26 +80,26 @@ module.exports = function(db) {
                 //Insert the new user into the DB with the mapped data
                 //Callback the callback with maybe an error once it completes
                 db.run(`INSERT INTO ${USER_TABLE_NAME} (
-                    firstName,
-                    lastName,
+                    first_name,
+                    last_name,
                     email,
-                    phoneNumber,
+                    phone_number,
                     passwordHash,
                     passwordSalt,
                     account_type
                 ) VALUES (
-                    $firstName,
-                    $lastName,                    
+                    $first_name,
+                    $last_name,                    
                     $email,
-                    $phoneNumber
+                    $phone_number
                     $hashedPassword,
                     $salt,
                     $account_type
                 )`, {
-                    $firstName: new_user.firstName,
-                    $lastName: new_user.lastName,
+                    $first_name: new_user.first_name,
+                    $last_name: new_user.last_name,
                     $email: new_user.email,
-                    $phoneNumber: new_user.phoneNum,
+                    $phone_number: new_user.phone_num,
                     $hashedPassword: hashedPassword,
                     $salt: salt,
                     $account_type: new_user.account_type
@@ -232,7 +232,7 @@ module.exports = function(db) {
 
         /**
         * Given an id, returns a JSON object containing the required user information:
-        * firstName, lastName, email, phoneNumber, and account_type
+        * first_name, last_name, email, phone_number, and account_type
         * Last Updated: NOv 20th/ 2017
         * Author: Tamara
         */
@@ -254,10 +254,10 @@ module.exports = function(db) {
 
                 //Return a JSON object with 
                 callback(undefined,{
-                    firstName: row.firstName,
-                    lastName: row.lastName,
+                    first_name: row.first_name,
+                    last_name: row.last_name,
                     email: row.email,
-                    phoneNum: row.phoneNumber,
+                    phone_num: row.phone_number,
                     account_type: row.account_type
                 });
             })
@@ -270,12 +270,12 @@ module.exports = function(db) {
          */
 
         updateClientInfo(client, callback){
-            db.run(`UPDATE ${USER_TABLE_NAME} SET firstName = $firstName, lastName = $lastName, 
-            email = $email, phoneNumber = $phoneNumnber WHERE id = $user_id`, {
-                $firstName: client.firstName,
-                $lastName: client.lastName, 
+            db.run(`UPDATE ${USER_TABLE_NAME} SET first_name = $first_name, last_name = $last_name, 
+            email = $email, phone_number = $phone_numnber WHERE id = $user_id`, {
+                $first_name: client.first_name,
+                $last_name: client.last_name, 
                 $email: client.email, 
-                $phoneNumber: client.phoneNumr,    
+                $phone_number: client.phone_numr,    
                 $user_id: client.user_id            
             }, (err) => {
                 if (err) {
@@ -288,9 +288,9 @@ module.exports = function(db) {
                     $user_id: client.user_id
                 }, (row) => {
                     callback(undefined, {
-                        firstName: row.firstName,
-                        lastName: row.lastName,
-                        phoneNum: row.phoneNumber,
+                        first_name: row.first_name,
+                        last_name: row.last_name,
+                        phone_num: row.phone_number,
                         email: row.email,                        
                     });
                 })
