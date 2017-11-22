@@ -7,7 +7,7 @@ const express    = require("express");
 
 //Include all of our submodules that we will pass our router
 const utils      = require('../utils');
-const dbUser     = require('../database/user');
+const db         = require('../database/database');
 const login      = require("./login");
 const medication = require("./medication");
 
@@ -17,5 +17,33 @@ var router = express.Router();
 //Pass this router to all of our sub-modules
 login(router);
 medication(router);
+
+router.get("/getUserTable", function(req, res) {
+    
+    db.user.getTable((err, table) => {
+        if (err) {
+            res.status(400).json(utils.createErrorObject(err.message));
+            return;
+        }
+    
+        // do stuff with table
+        
+        res.status(200).json(table);
+    });
+});
+
+router.get("/getMedicationsTable", function(req, res) {
+    
+    db.med.getTable((err, table) => {
+        if (err) {
+            res.status(400).json(utils.createErrorObject(err.message));
+            return;
+        }
+    
+        // do stuff with table
+        
+        res.status(200).json(table);
+    });
+});
 
 module.exports = router;
