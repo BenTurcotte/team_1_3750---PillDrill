@@ -186,7 +186,7 @@ module.exports = function(db, userDB) {
          * - misses
         */
         getMedications(user_id,callback){
-            db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}
+            db.all(`SELECT * FROM ${MEDICATION_TABLE_NAME}
                     WHERE user_id = $user_id`,{
                 $user_id: user_id,
             },(err, rows) => {
@@ -203,7 +203,7 @@ module.exports = function(db, userDB) {
                 }
 
                 var medicationArray = [];
-                rows.array.forEach(row => {
+                rows.forEach(row => {
                     medicationArray.push(
                         {
                             med_id              : row.id,  
@@ -234,7 +234,7 @@ module.exports = function(db, userDB) {
          * Author: Tamara
          */
         getTable(callback) {
-            db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}`, (err, rows) => {
+            db.all(`SELECT * FROM ${MEDICATION_TABLE_NAME}`, (err, rows) => {
                 if(err)
                 {
                     callback(err)
@@ -242,7 +242,7 @@ module.exports = function(db, userDB) {
                 }
 
                 var medicationArray = [];
-                rows.array.forEach(row => {
+                rows.forEach(row => {
                     medicationArray.push(
                     {
                         id: row.id,
