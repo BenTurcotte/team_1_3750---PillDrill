@@ -55,7 +55,7 @@ module.exports = function(router) {
         db.user.checkLogin(params.creator_id, params.login_token, (err) => {
             
             if (err) {
-                res.status(400).json(utils.createErrorObject("Session has expired."));
+                res.status(400).json(utils.createErrorObject(err.message));
                 return;
             }
 
