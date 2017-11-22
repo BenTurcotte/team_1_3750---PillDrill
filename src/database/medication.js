@@ -244,7 +244,7 @@ module.exports = function(db, userDB) {
 
                 if(!row){
                     callback(new Error("Medication does not exist"));
-                    console.error("getMedication: no rows from user", user_id);
+                    console.error("getMedication: no rows from med", med_id);
                     return;
                 }
 
