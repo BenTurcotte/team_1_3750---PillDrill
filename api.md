@@ -48,7 +48,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ---
 # API Endpoints
 
-## POST /login/createAccount
+## POST /users/createAccount
 ### Request
 ```javascript
 {
@@ -96,7 +96,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 
 ---
-## POST /medication/getMedications
+## POST /users/getMedications
 ### Request
 ```javascript
 {
@@ -136,7 +136,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 
 ---
-## POST /medication/getSchedule
+## POST /users/getSchedule
 ### Request
 ```javascript
 {
@@ -196,7 +196,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 
 ---
-## POST /medication/updateMedication
+## POST /users/updateMedication
 ### Request
 ```javascript
 {
@@ -230,7 +230,7 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 
 
 ---
-## POST /medication/deleteMedication
+## POST /users/deleteMedication
 ### Request
 ```javascript
 {
