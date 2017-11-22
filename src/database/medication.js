@@ -229,6 +229,46 @@ module.exports = function(db, userDB) {
         },
 
         /**
+         * Given a med_id, returns the info for the medication
+         */
+        getMedication(med_id,callback){
+            db.get(`SELECT * FROM ${MEDICATION_TABLE_NAME}
+                    WHERE id = $med_id`,{
+                $med_id: med_id,
+            },(err, row) => {
+                if (err) {
+                    callback(err);
+                    console.error("getMedication: select error", err);
+                    return;
+                }
+
+                if(!row){
+                    callback(new Error("Medication does not exist"));
+                    console.error("getMedication: no rows from user", user_id);
+                    return;
+                }
+
+                   
+                callback(undefined, {
+                    med_id              : row.id,  
+                    user_id             : row.user_id,  
+                    name                : row.name,  
+                    dosage              : row.dosage,  
+                    dosage_unit         : row.dosage_unit,  
+                    start_date          : row.start_date,  
+                    end_date            : row.end_date,  
+                    times               : row.times,  
+                    days_of_week        : row.days_of_week,  
+                    notes               : row.notes,  
+                    notification        : row.notification,  
+                    notification_before : row.notification_before,  
+                    hits                : row.hits,  
+                    misses              : row.misses
+                });             
+            });
+        },
+
+        /**
          * Returns a JSON array containing information about all medications
          * Last Updated: Nov 22/2017
          * Author: Tamara
