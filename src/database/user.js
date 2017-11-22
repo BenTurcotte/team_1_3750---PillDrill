@@ -91,7 +91,7 @@ module.exports = function(db) {
                     $first_name,
                     $last_name,                    
                     $email,
-                    $phone_number
+                    $phone_number,
                     $hashedPassword,
                     $salt,
                     $account_type
@@ -275,7 +275,7 @@ module.exports = function(db) {
                 $first_name: client.first_name,
                 $last_name: client.last_name, 
                 $email: client.email, 
-                $phone_number: client.phone_numr,    
+                $phone_number: client.phone_num,    
                 $user_id: client.user_id            
             }, (err) => {
                 if (err) {

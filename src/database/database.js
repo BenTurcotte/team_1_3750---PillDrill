@@ -34,14 +34,28 @@ if (!init) {
 
     userDB.createNewUser({
         first_name         : "CLC",
-        last_name          : "Admin",
+        last_name          : "Admin 1",
         email              : "iamadmin@clc.ca",
         password           : "iamadmin",
         phone_num          : "123-456-789",
         account_type       : "Admin"
     }, (err) => {
         if (err){
-            console.log("uh oh")
+            console.log(err)
+        }
+        
+    });
+
+    userDB.createNewUser({
+        first_name         : "CLC",
+        last_name          : "Admin 2",
+        email              : "testStaff@test.ca",
+        password           : "Password@1",
+        phone_num          : "123-456-7890",
+        account_type       : "Admin"
+    }, (err) => {
+        if (err){
+            console.log(err)
         }
         
     });
