@@ -74,6 +74,7 @@ module.exports = function(db) {
             hashPassword(new_user.password, (err, hashedPassword, salt) => {
                 if (err) {
                     callback(err);
+                    console.error("createNewUser: hashPassword error", err);
                     return;
                 }
 
@@ -106,6 +107,7 @@ module.exports = function(db) {
                 }, (dbErr) => {
                     if (dbErr) {
                         callback(dbErr);
+                        console.error("createNewUser: insert error", dbErr);
                         return;
                     }
                     
@@ -124,12 +126,12 @@ module.exports = function(db) {
             }, (err, row) => {
                 if (err) {
                     callback(err);
+                    console.error("getAccountType: select error", err);
                     return;
                 }
 
                 callback(undefined, row.account_type);
-            }
-        )
+            });
         },
 
         /**
@@ -145,12 +147,14 @@ module.exports = function(db) {
             }, (err, row) => {
                 if (err) {
                     callback(err);
+                    console.error("login: select error", err);
                     return;
                 }
 
                 //Return an error if there was no row with the given email
                 if (!row) {
                     callback(new Error("Couldn't get a row with email"));
+                    console.error("login: no rows for user", email);
                     return;
                 }
                 
@@ -158,6 +162,7 @@ module.exports = function(db) {
                 hashPassword(rawPassword, row.passwordSalt, (err, passwordHash, salt) => {
                     if (err) {
                         callback(err);
+                        console.error("login: hashPassword error", err);
                         return;
                     }
 
@@ -189,8 +194,8 @@ module.exports = function(db) {
                         });
                     } else {
                         callback(new Error("Passwords don't match"));
+                        console.error("login: passwords don't match for user", row.id);
                     }
-                    
                 });
             });
         },
@@ -247,11 +252,13 @@ module.exports = function(db) {
             }, (err, row) => {
                 if (err) {
                     callback(err);
+                    console.error("getClientInfo: select error", err);
                     return;
                 }
 
                 if (!row) {                    
                     callback(new Error("Couldn't get row with id"));
+                    console.error("getClientInfo: now rows for user", id);
                     return;
                 }
 
@@ -283,6 +290,7 @@ module.exports = function(db) {
             }, (err) => {
                 if (err) {
                     callback(err);
+                    console.error("updateClientInfo: update error", err);
                     return;
                 }
                 
@@ -296,8 +304,8 @@ module.exports = function(db) {
                         phone_num: row.phone_number,
                         email: row.email,                        
                     });
-                })
-            })
+                });
+            });
         }
     };
 };
