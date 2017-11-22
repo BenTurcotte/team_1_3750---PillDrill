@@ -27,7 +27,7 @@ module.exports = function(router) {
                     return;
                 }
 
-                res.status(200).json(utils.createResponseObject(allMeds));
+                res.status(200).json(utils.createResponseObject({ meds: allMeds }));
             });
         });
     });
@@ -83,28 +83,35 @@ module.exports = function(router) {
                     });
                 });
 
+                const dayMap = {
+                    Sunday: 0,
+                    Monday: 1,
+                    Tuesday: 2,
+                    Wednesday: 3,
+                    Thursday: 4,
+                    Friday: 5,
+                    Saturday: 6
+                };
+
                 medsByTime.sort().forEach(function(med) {
                     var days = med.days_of_week.split(",");
                     var i = 0;
                     for (i = 0; i < days.length; i++) {
-                        if (days[i] == 1) {
-                            schedule[i].push(
-                                {
-                                    id                  : med.id,
-                                    user_id             : med.user_id,
-                                    name                : med.name,
-                                    dosage              : med.dosage,
-                                    dosage_unit         : med.dosage_unit,
-                                    time                : med.time,
-                                    notes               : med.notes,
-                                    notification        : med.notification
-                                }
-                            );
-                        }
+                        schedule[dayMap[days[i]]] =
+                            {
+                                id                  : med.id,
+                                user_id             : med.user_id,
+                                name                : med.name,
+                                dosage              : med.dosage,
+                                dosage_unit         : med.dosage_unit,
+                                time                : med.time,
+                                notes               : med.notes,
+                                notification        : med.notification
+                            };
                     }
                 });
 
-                res.status(200).json(utils.createResponseObject(schedule));
+                res.status(200).json(utils.createResponseObject({ schedule: schedule }));
             });
         });
     });
