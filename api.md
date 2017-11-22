@@ -246,3 +246,5 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
     "msg" : String  // success message
 }
 ```
+
+![alt text](https://thei535project.files.wordpress.com/2016/01/2e06a4dbad3e80ac82a8fd771fe3f6c4.jpg?w=240 "happy minion")
