@@ -120,7 +120,7 @@ module.exports = function(db) {
          */
         getAccountType(user_id, callback){
             db.get(`SELECT account_type FROM ${USER_TABLE_NAME} WHERE id = $user_id`, { 
-                $user_id = user_id
+                $user_id: user_id
             }, (err, row) => {
                 if (err) {
                     callback(err);
