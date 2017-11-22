@@ -41,7 +41,7 @@ if (!init) {
         account_type       : "Admin"
     }, (err) => {
         if (err){
-            console.log("uh oh")
+            console.log(err)
         }
         
     });

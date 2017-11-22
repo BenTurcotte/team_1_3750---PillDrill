@@ -91,7 +91,7 @@ module.exports = function(db) {
                     $first_name,
                     $last_name,                    
                     $email,
-                    $phone_number
+                    $phone_number,
                     $hashedPassword,
                     $salt,
                     $account_type
