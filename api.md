@@ -234,9 +234,9 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ### Request
 ```javascript
 {
-    "login_token" : String,  // login token obtain upon logging in
-    "user_id"    : String,  // user id
-    "med_id"     : String   // medication id
+    "login_token" : String,  // login token obtained upon logging in
+    "user_id"     : String,  // user id
+    "med_id"      : String   // medication id
 }
 ```
 
@@ -244,6 +244,27 @@ Calling that endpoint might look like https://131.104.180.41:8000/thingWithParam
 ```javascript
 {
     "msg" : String  // success message
+}
+```
+
+
+## POST /users/getInfo
+(probably only works with CLCClient)
+### Request
+```javascript
+{
+    "login_token" : String, // login token obtained upon logging in
+    "user_id"     : Number  // user id
+}
+```
+### Response
+```javascript
+{
+    "first_name"   : String,  // user's first name
+    "last_name"    : String,  // user's last name
+    "email"        : String,  // user's email
+    "phone_num"    : String,  // user's phone number
+    "account_type" : String,  // account type ... should only be CLCClient
 }
 ```
 
