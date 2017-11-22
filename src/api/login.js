@@ -80,7 +80,8 @@ module.exports = function(router) {
                     });
                 }
                 else {
-                    res.status(400).json(utils.createErrorObject(err.message));
+                    res.status(400).json(utils.createErrorObject(
+                        "A non-admin cannot create an account"));
                     // res.status(400).json(utils.createErrorObject("User does not have permission to create an account"));
                 }
             });
